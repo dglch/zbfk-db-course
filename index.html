@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark" class="hub-html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бази даних. СУБД і мова SQL | Навчальний курс</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Доступ до матеріалів: 1/0 у js/course-config.js -->
+  <script src="js/course-config.js"></script>
+  <script src="js/access.js"></script>
+</head>
+<body class="hub-page">
+
+  <div class="hub-container">
+    
+    <!-- Top Navbar -->
+    <header class="hub-header">
+      <a href="index.html" class="hub-brand">
+        <div class="hub-brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <span>SQL Course Hub</span>
+      </a>
+
+      <div class="hub-header-actions">
+        <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-tonal">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>PlayCode SQL</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hub-hero">
+      <div class="hub-hero-pill">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        Навчальний інтерактивний курс
+      </div>
+      <h1 class="hub-hero-title">Бази даних. СУБД і мова SQL</h1>
+      <p class="hub-hero-description">
+        Практичне використання сучасних комп’ютерних технологій. Від розуміння принципу роботи серверів та оперативної пам'яті до створення власних таблиць і практичних аналітичних запитів.
+      </p>
+
+      <div class="hub-audience-tags">
+        <span class="audience-chip">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          100% онлайн у браузері
+        </span>
+      </div>
+    </section>
+
+    <!-- PlayCode SQL Tool Banner -->
+    <div class="hub-tool-banner">
+      <div class="tool-banner-info">
+        <div class="tool-banner-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
+        <div>
+          <div class="tool-banner-title">
+            Робоче середовище: PlayCode SQL Editor
+            <span class="tool-badge-online">Без встановлення</span>
+          </div>
+          <p class="tool-banner-desc">
+            Онлайн-пісочниця баз даних у браузері. Створюйте таблиці, додавайте записи та виконуйте запити миттєво з будь-якого комп'ютера чи ноутбука.
+          </p>
+        </div>
+      </div>
+      <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-primary">
+        <span>Відкрити SQL-редактор</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+
+    <!-- Materials & Labs Section -->
+    <div class="hub-section-header">
+      <h2 class="hub-section-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--md-sys-color-primary)" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Матеріали курсу та практичні роботи
+      </h2>
+      <p class="hub-section-subtitle">Обирайте тему, переглядайте інтерактивні презентації та виконуйте практичні завдання.</p>
+    </div>
+
+    <div class="hub-cards-grid">
+
+      <!-- Card 0: Вступна лекція -->
+      <div data-course-item="intro" class="hub-card active-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              Вступний модуль
+            </span>
+            <span class="hub-card-badge badge-intro">Доступно</span>
+          </div>
+          <h3 class="hub-card-title">Лекція: Навіщо веб-додаткам бази даних</h3>
+          <p class="hub-card-desc">
+            Чому комп'ютеру не вистачає лише оперативної пам'яті (RAM), що станеться при раптовому збої сервера та які суперсили надає сучасна СУБД.
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">RAM vs Диск</span>
+            <span class="topic-tag">Краш-тест</span>
+            <span class="topic-tag">СУБД</span>
+            <span class="topic-tag">3-рівнева модель</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <a href="intro/index.html" class="hub-card-btn hub-btn-primary">
+            <span>Відкрити лекцію</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 1: Практична 01 -->
+      <div data-course-item="lab-01" class="hub-card active-card practical-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Практична робота 01
+            </span>
+            <span class="hub-card-badge badge-ready">Доступно</span>
+          </div>
+          <h3 class="hub-card-title">Знайомство з СУБД та перша таблиця</h3>
+          <p class="hub-card-desc">
+            Реляційна модель, типи даних SQL та первинний ключ (PRIMARY KEY). Створюємо таблицю студентів для застосунку «Студент тижня» командою CREATE TABLE (PostgreSQL).
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">CREATE TABLE</span>
+            <span class="topic-tag">Типи даних</span>
+            <span class="topic-tag">PRIMARY KEY</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <a href="practicals/lab-01/index.html" class="hub-card-btn hub-btn-primary">
+            <span>Відкрити практичну 01</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: Практична 02 -->
+      <div data-course-item="lab-02" class="hub-card active-card practical-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Практична робота 02
+            </span>
+            <span class="hub-card-badge badge-ready">Доступно</span>
+          </div>
+          <h3 class="hub-card-title">Вставка та вибірка даних з фільтрацією</h3>
+          <p class="hub-card-desc">
+            Наповнюємо таблицю учасників «Студента тижня» командою INSERT та знаходимо потрібних студентів: вибірка SELECT і фільтрація за умовою WHERE.
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">INSERT INTO</span>
+            <span class="topic-tag">SELECT</span>
+            <span class="topic-tag">WHERE</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <a href="practicals/lab-02/index.html" class="hub-card-btn hub-btn-primary">
+            <span>Відкрити практичну 02</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: Практична 03 -->
+      <div data-course-item="lab-03" class="hub-card active-card practical-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Практична робота 03
+            </span>
+            <span class="hub-card-badge badge-ready">Доступно</span>
+          </div>
+          <h3 class="hub-card-title">Зміна, сортування та обмеження даних</h3>
+          <p class="hub-card-desc">
+            Голосуємо «+1» командою UPDATE, видаляємо записи DELETE, будуємо рейтинг ORDER BY і знаходимо трійку лідерів за допомогою LIMIT.
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">UPDATE</span>
+            <span class="topic-tag">DELETE</span>
+            <span class="topic-tag">ORDER BY</span>
+            <span class="topic-tag">LIMIT</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <a href="practicals/lab-03/index.html" class="hub-card-btn hub-btn-primary">
+            <span>Відкрити практичну 03</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: Практична 04 -->
+      <div data-course-item="lab-04" class="hub-card active-card practical-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Практична робота 04
+            </span>
+            <span class="hub-card-badge badge-ready">Доступно</span>
+          </div>
+          <h3 class="hub-card-title">Зв'язки між таблицями (JOIN)</h3>
+          <p class="hub-card-desc">
+            Журнал голосів в окремій таблиці: зовнішній ключ (FOREIGN KEY) пов'язує його зі студентами, а JOIN збирає дані з двох таблиць.
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">FOREIGN KEY</span>
+            <span class="topic-tag">JOIN</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <a href="practicals/lab-04/index.html" class="hub-card-btn hub-btn-primary">
+            <span>Відкрити практичну 04</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 5: Практична 05 -->
+      <div data-course-item="lab-05" class="hub-card active-card practical-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Практична робота 05
+            </span>
+            <span class="hub-card-badge badge-ready">Доступно</span>
+          </div>
+          <h3 class="hub-card-title">Агрегація даних та бізнес-аналітика</h3>
+          <p class="hub-card-desc">
+            Функції COUNT, SUM, AVG та групування GROUP BY. Рахуємо статистику конкурсу: яка група набрала найбільше голосів і хто став «Студентом тижня».
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">COUNT()</span>
+            <span class="topic-tag">SUM()</span>
+            <span class="topic-tag">AVG()</span>
+            <span class="topic-tag">GROUP BY</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <a href="practicals/lab-05/index.html" class="hub-card-btn hub-btn-primary">
+            <span>Відкрити практичну 05</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 6: Практична 06 -->
+      <div class="hub-card locked-card final-card">
+        <div>
+          <div class="hub-card-header">
+            <span class="hub-card-category">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              Підсумковий проект
+            </span>
+            <span class="hub-card-badge badge-soon">Фінал курсу</span>
+          </div>
+          <h3 class="hub-card-title">Практична 06: Розробка своєї власної невеличкої БД для реального веб-додатку</h3>
+          <p class="hub-card-desc">
+            Комплексна інженерна робота: проектування схеми бази даних за фахом.
+          </p>
+          <div class="hub-card-topics">
+            <span class="topic-tag">Проектування схеми</span>
+            <span class="topic-tag">Реальний кейс</span>
+            <span class="topic-tag">Презентація та захист</span>
+          </div>
+        </div>
+        <div class="hub-card-action">
+          <button class="hub-card-btn hub-btn-disabled" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Відкриється після проходження попередніх тем</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3-Step Practical Workflow -->
+    <div class="hub-section-header">
+      <h2 class="hub-section-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--md-sys-color-primary)" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+        Як організована робота на кожному занятті
+      </h2>
+      <p class="hub-section-subtitle">Простий алгоритм з 3 кроків для успішного виконання та захисту робіт.</p>
+    </div>
+
+    <div class="hub-steps-grid">
+      <div class="hub-step-card">
+        <div class="hub-step-num">1</div>
+        <h4 class="hub-step-title">Перегляньте презентацію</h4>
+        <p class="hub-step-desc">
+          Відкрийте слайди практичної роботи, ознайомтеся з синтаксисом команд, типами даних та готовими зразками SQL-коду.
+        </p>
+      </div>
+
+      <div class="hub-step-card">
+        <div class="hub-step-num">2</div>
+        <h4 class="hub-step-title">Виконайте код у PlayCode</h4>
+        <p class="hub-step-desc">
+          Відкрийте онлайн-редактор у сусідній вкладці, напишіть SQL-запити за завданням та запустіть їх на виконання.
+        </p>
+      </div>
+
+      <div class="hub-step-card">
+        <div class="hub-step-num">3</div>
+        <h4 class="hub-step-title">Здайте звіт у Classroom</h4>
+        <p class="hub-step-desc">
+          Прикріпіть до завдання скріншоти з PlayCode, відповіді на контрольні запитання та висновок — як вказано в кінці практичної.
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="hub-footer">
+      <p>© 2026 Навчальний портал курсу «Бази даних. СУБД і мова SQL».</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

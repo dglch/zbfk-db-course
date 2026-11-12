@@ -1,0 +1,2353 @@
+/* ==========================================================================
+   Material Design 3 (M3) Presentation System
+   Course: БАЗИ ДАНИХ. СУБД І МОВА SQL
+   ========================================================================== */
+
+:root {
+  /* MD3 Light Theme Color Tokens (Tech Indigo & Ocean Palette) */
+  --md-sys-color-primary: #1d4ed8;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #dbeafe;
+  --md-sys-color-on-primary-container: #1e3a8a;
+  
+  --md-sys-color-secondary: #0284c7;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #e0f2fe;
+  --md-sys-color-on-secondary-container: #0369a1;
+
+  --md-sys-color-tertiary: #7c3aed;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #ede9fe;
+  --md-sys-color-on-tertiary-container: #5b21b6;
+
+  --md-sys-color-error: #dc2626;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #fee2e2;
+  --md-sys-color-on-error-container: #991b1b;
+
+  --md-sys-color-success: #16a34a;
+  --md-sys-color-on-success: #ffffff;
+  --md-sys-color-success-container: #dcfce7;
+  --md-sys-color-on-success-container: #166534;
+
+  --md-sys-color-surface: #f8fafc;
+  --md-sys-color-on-surface: #0f172a;
+  --md-sys-color-surface-variant: #f1f5f9;
+  --md-sys-color-on-surface-variant: #475569;
+  
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f8fafc;
+  --md-sys-color-surface-container: #f1f5f9;
+  --md-sys-color-surface-container-high: #e2e8f0;
+  --md-sys-color-surface-container-highest: #cbd5e1;
+
+  --md-sys-color-outline: #94a3b8;
+  --md-sys-color-outline-variant: #e2e8f0;
+
+  /* Elevations */
+  --md-elevation-1: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --md-elevation-2: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.08);
+  --md-elevation-3: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+  --md-elevation-4: 0 20px 25px -5px rgba(0, 0, 0, 0.09), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+
+  /* Typography */
+  --md-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --md-font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  /* Shapes */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-standard: 280ms cubic-bezier(0.2, 0, 0, 1);
+  --transition-decelerate: 350ms cubic-bezier(0, 0, 0.2, 1);
+
+  /* Accent palette (tuned for the dark theme). Use via .accent-* classes below:
+     --accent = text/icon, --accent-strong = borders, --accent-bg = tinted fill */
+  --accent-blue: #60a5fa;   --accent-blue-strong: #3b82f6;   --accent-blue-bg: rgba(37, 99, 235, 0.15);
+  --accent-amber: #fbbf24;  --accent-amber-strong: #f59e0b;  --accent-amber-bg: rgba(245, 158, 11, 0.15);
+  --accent-green: #4ade80;  --accent-green-strong: #22c55e;  --accent-green-bg: rgba(34, 197, 94, 0.15);
+  --accent-purple: #c084fc; --accent-purple-strong: #a855f7; --accent-purple-bg: rgba(168, 85, 247, 0.15);
+  --accent-red: #f87171;    --accent-red-strong: #ef4444;    --accent-red-bg: rgba(239, 68, 68, 0.15);
+  --accent-pink: #f472b6;   --accent-pink-strong: #ec4899;   --accent-pink-bg: rgba(236, 72, 153, 0.15);
+}
+
+/* Dark Theme Overrides */
+[data-theme="dark"] {
+  --md-sys-color-primary: #60a5fa;
+  --md-sys-color-on-primary: #082f49;
+  --md-sys-color-primary-container: #1e3a8a;
+  --md-sys-color-on-primary-container: #dbeafe;
+
+  --md-sys-color-secondary: #38bdf8;
+  --md-sys-color-on-secondary: #082f49;
+  --md-sys-color-secondary-container: #0369a1;
+  --md-sys-color-on-secondary-container: #e0f2fe;
+
+  --md-sys-color-tertiary: #a78bfa;
+  --md-sys-color-on-tertiary: #2e1065;
+  --md-sys-color-tertiary-container: #4c1d95;
+  --md-sys-color-on-tertiary-container: #ede9fe;
+
+  --md-sys-color-error: #f87171;
+  --md-sys-color-on-error: #450a0a;
+  --md-sys-color-error-container: #7f1d1d;
+  --md-sys-color-on-error-container: #fee2e2;
+
+  --md-sys-color-success: #4ade80;
+  --md-sys-color-on-success: #052e16;
+  --md-sys-color-success-container: #14532d;
+  --md-sys-color-on-success-container: #dcfce7;
+
+  --md-sys-color-surface: #0b0f19;
+  --md-sys-color-on-surface: #f1f5f9;
+  --md-sys-color-surface-variant: #1e293b;
+  --md-sys-color-on-surface-variant: #94a3b8;
+
+  --md-sys-color-surface-container-lowest: #050811;
+  --md-sys-color-surface-container-low: #0e1424;
+  --md-sys-color-surface-container: #141c2e;
+  --md-sys-color-surface-container-high: #1c273e;
+  --md-sys-color-surface-container-highest: #283754;
+
+  --md-sys-color-outline: #475569;
+  --md-sys-color-outline-variant: #1e293b;
+
+  --md-elevation-1: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --md-elevation-2: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --md-elevation-3: 0 10px 15px -3px rgba(0, 0, 0, 0.45);
+  --md-elevation-4: 0 20px 25px -5px rgba(0, 0, 0, 0.55);
+}
+
+/* ==========================================================================
+   Base Styles & Reset
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  font-family: var(--md-font-family);
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* `hidden` must win over component display rules (e.g. .m3-callout { display: flex }) */
+[hidden] {
+  display: none !important;
+}
+
+/* Без лігатур: студенти мають бачити саме ті символи, які набирають (>= а не ≥, <> а не ◇) */
+code, pre {
+  font-family: var(--md-font-mono);
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+}
+
+/* Inline code inside text (code blocks in <pre> keep their own styling) */
+:not(pre) > code {
+  font-size: 0.88em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-xs);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--md-sys-color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-surface-container-highest);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-outline);
+}
+
+/* Presentation pages: fixed viewport with zero window scrolling */
+body:has(.presentation-viewport),
+html:has(.presentation-viewport),
+body.presentation-page,
+html.presentation-page {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Course Hub and standard pages: natural vertical scrolling */
+html.hub-html,
+body.hub-page,
+.hub-page {
+  height: auto !important;
+  min-height: 100%;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+/* ==========================================================================
+   Presentation Shell
+   ========================================================================== */
+.presentation-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05) 0%, transparent 60%),
+              var(--md-sys-color-surface);
+}
+
+/* Top Progress Bar */
+.progress-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--md-sys-color-surface-container-highest);
+  z-index: 100;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--md-sys-color-primary), var(--md-sys-color-secondary));
+  transition: width var(--transition-standard);
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+}
+
+/* Slide Deck Container */
+.slides-wrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 3rem 4.5rem 5.5rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98) translateY(12px);
+  transition: opacity var(--transition-standard), transform var(--transition-standard), visibility var(--transition-standard);
+  overflow-y: auto;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  z-index: 10;
+}
+
+/* Custom Scrollbar for slide content */
+.slide::-webkit-scrollbar {
+  width: 6px;
+}
+.slide::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   Material Typography & Components
+   ========================================================================== */
+.slide-header {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.m3-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-sm);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  text-transform: uppercase;
+}
+
+.m3-chip.primary {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.m3-chip.tertiary {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.m3-chip.error {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.m3-chip.success {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.slide-title {
+  font-size: 2.35rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--md-sys-color-on-surface);
+}
+
+.slide-subtitle {
+  font-size: 1.15rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-weight: 400;
+  max-width: 900px;
+  line-height: 1.5;
+}
+
+/* Slide Content Layouts */
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  align-items: stretch;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+/* MD3 Surface Cards */
+.m3-card {
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--md-elevation-1);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.m3-card.elevated:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--md-elevation-3);
+  border-color: var(--md-sys-color-outline);
+}
+
+.m3-card.highlight {
+  border-color: var(--md-sys-color-primary);
+  background: linear-gradient(180deg, var(--md-sys-color-surface-container-lowest) 0%, var(--md-sys-color-primary-container) 140%);
+}
+
+.m3-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.m3-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-primary);
+  flex-shrink: 0;
+}
+
+.m3-icon-badge.danger {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.m3-icon-badge.success {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.m3-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.m3-card-body {
+  font-size: 0.975rem;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+  flex: 1;
+}
+
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.feature-list li span,
+.feature-list li div {
+  flex: 1;
+}
+
+.feature-list li svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.feature-list li.pro svg {
+  color: var(--md-sys-color-success);
+}
+
+.feature-list li.con svg {
+  color: var(--md-sys-color-error);
+}
+
+.feature-list.relaxed {
+  gap: 1rem;
+}
+
+/* Square tinted icon at the start of a .feature-list item (emoji or short label like "PK") */
+.feature-icon,
+.feature-list li .feature-icon {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  background: var(--accent-bg, var(--md-sys-color-surface-container));
+  color: var(--accent, var(--md-sys-color-primary));
+}
+
+.feature-icon.label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+/* Card variants */
+.m3-card.filled {
+  background: var(--md-sys-color-surface-container);
+}
+
+.m3-card.filled-high {
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.m3-card.danger {
+  border-color: var(--md-sys-color-error);
+}
+
+/* Colored top stripe; color comes from an .accent-* class on the same card */
+.m3-card.top-accent {
+  border-top: 4px solid var(--accent-strong, var(--md-sys-color-primary));
+}
+
+.m3-icon-badge.primary {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.m3-icon-badge.tertiary {
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* Small caption under .m3-card-title inside .m3-card-header */
+.m3-card-subtitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Generic card content: heading, body text, small note, header row */
+.card-heading {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.card-note {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.card-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-emoji {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.bullet-list {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Більші відступи між пунктами (напр. контрольні запитання в <ol>) */
+.bullet-list.relaxed li + li {
+  margin-top: 0.6rem;
+}
+
+.bullet-list li::marker {
+  color: var(--md-sys-color-primary);
+  font-weight: 700;
+}
+
+.text-link {
+  color: var(--md-sys-color-primary);
+  text-decoration: underline;
+}
+
+/* Wide card with an emoji/text + action laid out in a row */
+.banner-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+}
+
+.banner-emoji {
+  font-size: 2.5rem;
+}
+
+.banner-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.banner-text {
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+/* Small standalone SQL snippet inside a card (not a copyable .code-box) */
+code.code-snippet {
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.4rem;
+  background: var(--md-sys-color-surface-container);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+/* Summary slide card */
+.summary-card {
+  max-width: 850px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.25rem;
+}
+
+.summary-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: var(--md-sys-color-primary);
+}
+
+/* Centered row of buttons (hero slides, end of a summary card) */
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+/* ==========================================================================
+   Title Slide Specifics
+   ========================================================================== */
+.slide-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius-full);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(135deg, var(--md-sys-color-primary) 0%, var(--md-sys-color-tertiary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-description {
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 2.5rem;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 1.75rem;
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.hero-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Practical-lab hero pill (green) */
+.hero-pill.success {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+/* Row of .audience-chip under the hero description */
+.hero-chips {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Interactive Simulations (RAM Crash vs DB Resilience)
+   ========================================================================== */
+.sim-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: var(--md-elevation-2);
+}
+
+.sim-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--md-sys-color-surface-container-lowest);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.sim-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.sim-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.status-online {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.status-crashed {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  animation: pulse-danger 1s infinite alternate;
+}
+
+@keyframes pulse-danger {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.05); opacity: 0.75; }
+}
+
+.sim-student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-height: 230px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  padding-right: 0.25rem;
+}
+
+.sim-student-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: all var(--transition-fast);
+}
+
+.sim-student-item:hover {
+  background: var(--md-sys-color-surface-container);
+}
+
+.student-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.student-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.student-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.student-faculty {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.student-votes {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.vote-counter {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--md-sys-color-primary);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* DB-simulation color variants */
+.student-avatar.secondary {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.vote-counter.secondary {
+  color: var(--md-sys-color-secondary);
+}
+
+/* Simulation panel header texts */
+.sim-panel-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.sim-panel-caption {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.sim-panel-meta {
+  font-size: 0.8rem;
+  font-family: var(--md-font-mono);
+}
+
+.sim-hint {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* "Add participant" inline form */
+.sim-add-form {
+  background: var(--md-sys-color-surface-container);
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  margin-bottom: 0.75rem;
+}
+
+.sim-form-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.sim-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sim-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.25rem;
+}
+
+.sim-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--md-sys-color-outline);
+  background: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface);
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.sim-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Bottom button row of the app panel */
+.sim-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.sim-console-title {
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+/* Reboot loader content (rendered by simulations.js) */
+.sim-loader-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.sim-loader-text {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.sim-countdown {
+  font-size: 1.15rem;
+  color: var(--md-sys-color-on-surface);
+  font-variant-numeric: tabular-nums;
+}
+
+.sim-loader-note {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+
+/* Empty list state after RAM wipe */
+.sim-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--md-sys-color-error);
+  font-weight: 600;
+}
+
+.sim-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Material Buttons */
+.m3-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.m3-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* M3 tonal button: secondary action next to a primary one (e.g. "Відкрити PlayCode ↗") */
+.m3-btn-tonal {
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+.m3-btn-tonal:hover {
+  filter: brightness(1.12);
+  box-shadow: var(--md-elevation-1);
+}
+
+.m3-btn-primary {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: var(--md-elevation-1);
+}
+.m3-btn-primary:hover {
+  opacity: 0.92;
+  box-shadow: var(--md-elevation-2);
+}
+
+.m3-btn-secondary {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+.m3-btn-secondary:hover {
+  background: var(--md-sys-color-surface-container-highest);
+}
+
+.m3-btn-danger {
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  box-shadow: var(--md-elevation-1);
+}
+.m3-btn-danger:hover {
+  background: #b91c1c;
+  box-shadow: var(--md-elevation-2);
+}
+
+.m3-btn-small {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+}
+
+.m3-btn-vote {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border: 1px solid var(--md-sys-color-primary);
+}
+.m3-btn-vote:hover {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.sim-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.sim-server-visual {
+  border: 1px dashed var(--md-sys-color-outline);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  background: var(--md-sys-color-surface-container-low);
+  font-family: var(--md-font-mono);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--md-sys-color-on-surface-variant);
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-server-visual.screen-flicker {
+  animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px); filter: invert(0.8); }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px); filter: contrast(2); }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0); filter: none; }
+}
+
+.console-log {
+  max-height: 90px;
+  overflow-y: auto;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.console-log .entry {
+  margin-bottom: 2px;
+}
+.console-log .entry.error { color: var(--md-sys-color-error); font-weight: bold; }
+.console-log .entry.success { color: var(--md-sys-color-success); font-weight: bold; }
+.console-log .entry.warn { color: #f59e0b; }
+
+/* Simulation Loader & Reboot Box */
+.sim-loader-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--md-sys-color-outline-variant);
+}
+
+.m3-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--md-sys-color-surface-container-high);
+  border-top-color: var(--md-sys-color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.m3-spinner.danger {
+  border-top-color: var(--md-sys-color-error);
+}
+
+.m3-spinner.secondary {
+  border-top-color: var(--md-sys-color-secondary);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Callout Box */
+.m3-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--md-sys-color-surface-container);
+  border-left: 4px solid var(--md-sys-color-primary);
+  margin-top: 1rem;
+}
+
+.m3-callout.warning {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+  color: #92400e;
+}
+[data-theme="dark"] .m3-callout.warning {
+  background: #2a2007;
+  color: #fcd34d;
+}
+
+.m3-callout.danger {
+  border-left-color: var(--md-sys-color-error);
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.m3-callout.success {
+  border-left-color: var(--md-sys-color-success);
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.m3-callout svg {
+  flex-shrink: 0;
+}
+
+/* Tighter callout inside simulation panels */
+.m3-callout.compact {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   Architecture & Flow Visualizations
+   ========================================================================== */
+.arch-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1.5rem;
+  background: var(--md-sys-color-surface-container-low);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  position: relative;
+  margin: 1rem 0;
+}
+
+.arch-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 2px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-elevation-1);
+  min-width: 170px;
+  position: relative;
+}
+
+.arch-node.client { border-color: var(--md-sys-color-secondary); }
+.arch-node.server { border-color: var(--md-sys-color-primary); }
+.arch-node.storage { border-color: var(--md-sys-color-tertiary); }
+.arch-node.crashed { border-color: var(--md-sys-color-error); background: var(--md-sys-color-error-container); }
+
+.arch-node .node-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.arch-node .node-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.arch-node .node-sub {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Technology list under a node ("HTML • CSS • JavaScript") */
+.arch-node .node-tech {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--md-sys-color-primary);
+}
+
+/* Node that exists in theory but is not used in this architecture */
+.arch-node.unused {
+  border-style: dashed;
+  opacity: 0.5;
+}
+
+.arch-diagram.spacious {
+  padding: 2.25rem 1.5rem;
+}
+
+.arch-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface-variant);
+  gap: 0.35rem;
+}
+
+.arch-arrow svg {
+  width: 32px;
+  height: 24px;
+}
+
+/* Roadmap Grid */
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.roadmap-card {
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.roadmap-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--md-sys-color-primary);
+}
+
+.roadmap-card.accent-secondary::before { background: var(--md-sys-color-secondary); }
+.roadmap-card.accent-tertiary::before { background: var(--md-sys-color-tertiary); }
+
+.roadmap-number {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 0.4rem;
+}
+
+.roadmap-card.accent-secondary .roadmap-number { color: var(--md-sys-color-secondary); }
+.roadmap-card.accent-tertiary .roadmap-number { color: var(--md-sys-color-tertiary); }
+
+.roadmap-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.roadmap-desc {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ==========================================================================
+   Bottom Presentation Navigation Bar (Material Floating Bar)
+   ========================================================================== */
+.presentation-bar {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--md-sys-color-surface-container-lowest);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-elevation-3);
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bar-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.bar-btn:hover {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-primary);
+}
+
+.bar-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--md-sys-color-outline-variant);
+  margin: 0 0.2rem;
+}
+
+.slide-counter {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0 0.5rem;
+  min-width: 68px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--md-sys-color-on-surface);
+}
+
+/* ==========================================================================
+   Print / Export to PDF
+   ========================================================================== */
+@media print {
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  .presentation-bar, .progress-container, .hub-back-btn {
+    display: none !important;
+  }
+
+  .slides-wrapper {
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  .slide {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    page-break-after: always;
+    page-break-inside: avoid;
+    height: 100vh !important;
+    padding: 2rem !important;
+    display: flex !important;
+  }
+
+  .m3-card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 900px) {
+  .slide {
+    padding: 2rem 1.5rem 5rem 1.5rem;
+  }
+  .slide-title {
+    font-size: 1.85rem;
+  }
+  .grid-2col, .grid-3col, .sim-container, .roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+  .arch-diagram {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .arch-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+/* ==========================================================================
+   Hub Navigation & Back Button
+   ========================================================================== */
+/* Ghost-кнопка: у спокої майже непомітна, щоб не відтягувати увагу від слайда */
+.hub-back-btn {
+  position: fixed;
+  top: 0.6rem;
+  left: 0.75rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  opacity: 0.55;
+  transition: all var(--transition-fast);
+}
+
+.hub-back-btn:hover,
+.hub-back-btn:focus-visible {
+  opacity: 1;
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-elevation-2);
+}
+
+.hub-back-btn svg {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Course Hub Portal Styles (index.html)
+   ========================================================================== */
+.hub-page {
+  min-height: 100vh;
+  height: auto !important;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-font-family);
+  line-height: 1.6;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+.hub-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem 1.5rem;
+}
+
+/* Hub Header */
+.hub-header {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.hub-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+}
+
+.hub-brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--md-sys-color-primary), var(--md-sys-color-tertiary));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--md-elevation-2);
+}
+
+.hub-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hub-header .m3-btn {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.825rem;
+}
+
+/* Hub Hero */
+.hub-hero {
+  text-align: center;
+  padding: 2.5rem 1rem 3rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hub-hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.hub-hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--md-sys-color-on-surface) 30%, var(--md-sys-color-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hub-hero-description {
+  font-size: 1.15rem;
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 760px;
+  margin: 0 auto 1.75rem auto;
+}
+
+.hub-audience-tags {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.audience-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-full);
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+.audience-chip svg {
+  color: var(--md-sys-color-primary);
+}
+
+/* PlayCode Banner */
+.hub-tool-banner {
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.25), rgba(124, 58, 237, 0.2));
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: var(--md-elevation-2);
+}
+
+.hub-tool-banner .m3-btn {
+  white-space: nowrap;
+}
+
+/* Smaller banner variant used inside slides */
+.hub-tool-banner.compact {
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 0;
+}
+
+.hub-tool-banner.compact .tool-banner-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.tool-banner-info {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.tool-banner-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: var(--md-elevation-2);
+}
+
+.tool-banner-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tool-banner-desc {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+.tool-badge-online {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Section Headers */
+.hub-section-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.hub-section-subtitle {
+  font-size: 0.95rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 1.75rem;
+}
+
+/* Cards Grid */
+.hub-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.hub-card {
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all var(--transition-standard);
+  position: relative;
+  overflow: hidden;
+}
+
+.hub-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--md-elevation-3);
+  border-color: var(--md-sys-color-primary);
+}
+
+.hub-card.active-card {
+  border-color: rgba(59, 130, 246, 0.4);
+  background: var(--md-sys-color-surface-container-high);
+}
+
+.hub-card.locked-card {
+  opacity: 0.75;
+}
+
+.hub-card.locked-card:hover {
+  transform: none;
+  border-color: var(--md-sys-color-outline-variant);
+  box-shadow: none;
+}
+
+.hub-card.locked-card .hub-card-category {
+  color: var(--md-sys-color-outline);
+}
+
+/* Unlocked practical lab: green accent */
+.hub-card.practical-card {
+  border-color: rgba(34, 197, 94, 0.4);
+}
+.hub-card.practical-card .hub-card-category {
+  color: var(--md-sys-color-success);
+}
+.hub-card.practical-card .hub-btn-primary {
+  --hub-btn-bg: #15803d;
+  --hub-btn-bg-hover: #16a34a;
+  --hub-btn-glow: rgba(22, 163, 74, 0.35);
+}
+
+/* Final semester project: full-width, purple accent */
+.hub-card.final-card {
+  grid-column: 1 / -1;
+}
+.hub-card.final-card .hub-card-category {
+  color: var(--accent-purple-strong);
+}
+
+.hub-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.hub-card-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hub-card-badge {
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.badge-ready {
+  background: var(--md-sys-color-success-container);
+  color: var(--md-sys-color-on-success-container);
+}
+
+.badge-soon {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.badge-intro {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.hub-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.6rem;
+  line-height: 1.3;
+}
+
+.hub-card-desc {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.hub-card-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.topic-tag {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-xs);
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-font-mono);
+}
+
+.hub-card-action {
+  margin-top: auto;
+}
+
+.hub-card-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+/* Колір кнопки задається змінними: синій за замовчуванням (лекція),
+   зелений — у .practical-card. Ефект наведення спільний. */
+.hub-btn-primary {
+  --hub-btn-bg: var(--md-sys-color-primary);
+  --hub-btn-bg-hover: #93c5fd;
+  --hub-btn-glow: rgba(96, 165, 250, 0.35);
+  background: var(--hub-btn-bg);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: var(--md-elevation-1);
+}
+
+.hub-btn-primary:hover,
+.hub-btn-primary:focus-visible {
+  background: var(--hub-btn-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--hub-btn-glow);
+}
+
+.hub-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: var(--md-elevation-1);
+}
+
+.hub-btn-primary svg {
+  transition: transform var(--transition-fast);
+}
+
+.hub-btn-primary:hover svg,
+.hub-btn-primary:focus-visible svg {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-btn-primary:hover,
+  .hub-btn-primary:hover svg {
+    transform: none;
+  }
+}
+
+.hub-btn-disabled {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Workflow Steps */
+.hub-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 3.5rem;
+}
+
+.hub-step-card {
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  position: relative;
+}
+
+.hub-step-num {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.hub-step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.hub-step-desc {
+  font-size: 0.88rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+}
+
+/* Hub Footer */
+.hub-footer {
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   SQL Code Blocks & Highlighting
+   ========================================================================== */
+.code-box {
+  background: #090d16;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-md);
+  margin: 1.25rem 0;
+  overflow: hidden;
+  box-shadow: var(--md-elevation-2);
+}
+
+.code-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-box-lang {
+  font-family: var(--md-font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #93c5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-xs);
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.code-copy-btn.copied {
+  background: #166534;
+  border-color: #22c55e;
+  color: #dcfce7;
+}
+
+.code-copy-btn.copy-failed {
+  background: #7f1d1d;
+  border-color: #ef4444;
+  color: #fee2e2;
+}
+
+.code-box pre {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-family: var(--md-font-mono);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #e2e8f0;
+}
+
+/* Довгий стартовий скрипт: дрібніший шрифт і прокрутка всередині блоку (копіюється кнопкою повністю) */
+.code-box.compact pre {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  max-height: 38vh;
+  overflow-y: auto;
+}
+
+/* Syntax token colors */
+.sql-kw { color: #93c5fd; font-weight: 700; }     /* Blue: CREATE, TABLE, INSERT, INTO, SELECT, FROM */
+.sql-type { color: #f59e0b; font-weight: 600; }   /* Amber: INTEGER, TEXT, REAL, BOOLEAN */
+.sql-str { color: #86efac; }                      /* Light Green: 'Механік' */
+.sql-comment { color: #64748b; font-style: italic; } /* Slate: comments */
+.sql-num { color: #c084fc; }                      /* Purple: numbers */
+.sql-fn { color: #38bdf8; font-weight: 600; }     /* Cyan: functions */
+
+/* ==========================================================================
+   Data Table Display (M3 Clean Table)
+   ========================================================================== */
+.m3-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-md);
+  margin: 1.25rem 0;
+  background: var(--md-sys-color-surface-container);
+}
+
+.m3-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.m3-table th {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-table th small {
+  display: block;
+  font-size: 0.72rem;
+  font-family: var(--md-font-mono);
+  color: var(--md-sys-color-primary);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.m3-table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Щільна таблиця для довгих рядків (напр. «Типові помилки» з текстами повідомлень СУБД) */
+.m3-table.compact th,
+.m3-table.compact td {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.m3-table.compact code {
+  word-break: break-word;
+}
+
+.m3-table tr:last-child td {
+  border-bottom: none;
+}
+
+.m3-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pk-chip {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-xs);
+  font-size: 0.68rem;
+  font-weight: 700;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   Classroom Report & Task Card
+   ========================================================================== */
+.report-guide-card {
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-primary);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--md-elevation-2);
+}
+
+.report-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.report-header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.report-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.report-checklist li svg {
+  color: var(--md-sys-color-success);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+/* Responsive Hub */
+@media (max-width: 768px) {
+  .hub-hero-title {
+    font-size: 2.1rem;
+  }
+  .hub-tool-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hub-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  .hub-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+}
+
+/* ==========================================================================
+   Practical Lab Components (practicals/lab-XX)
+   ========================================================================== */
+/* Caption above an example table inside a card */
+.table-caption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #93c5fd;
+}
+
+/* Primary-key values in example tables */
+.m3-table td.pk-value {
+  color: var(--accent-amber);
+  font-weight: 700;
+}
+
+/* SQL type name in the data types table; color from an .accent-* class */
+.type-name {
+  font-family: var(--md-font-mono);
+  color: var(--accent, var(--md-sys-color-primary));
+}
+
+/* "Завдання" label on a task card; color from an .accent-* class */
+.variant-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--accent, var(--md-sys-color-primary));
+}
+
+.audience-chip.compact {
+  font-size: 0.75rem;
+}
+
+/* Note + button row under a demo .code-box */
+.code-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.code-footer .m3-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   Access Control (js/access.js + js/course-config.js)
+   ========================================================================== */
+/* Закрита сторінка: ховаємо все, крім екрана-заглушки (клас ставиться в <head>) */
+html.is-access-locked body > :not(.access-lock-screen) {
+  display: none !important;
+}
+
+.access-lock-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: var(--md-sys-color-surface);
+}
+
+.access-lock-card {
+  max-width: 440px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--md-elevation-3);
+}
+
+.access-lock-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.25rem;
+  border-radius: var(--radius-full);
+  background: var(--accent-amber-bg);
+  color: var(--accent-amber);
+}
+.access-lock-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.access-lock-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.access-lock-text {
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 1.75rem;
+}
+
+/* Плашка режиму викладача (?preview) — лівий нижній кут: не перекриває шапку hub і панель слайдів */
+.access-preview-pill {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 1100;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--accent-amber-strong);
+  color: var(--accent-amber);
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: var(--md-elevation-3);
+}
+.access-preview-pill a {
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: var(--accent-amber-strong);
+  color: #1c1917;
+  text-decoration: none;
+}
+
+/* На вузьких екранах піднімаємо над панеллю навігації слайдів */
+@media (max-width: 768px) {
+  .access-preview-pill {
+    bottom: 5rem;
+    left: 0.75rem;
+  }
+}
+
+@media print {
+  .access-preview-pill { display: none; }
+}
+
+/* ==========================================================================
+   Accent Classes
+   Set --accent / --accent-strong / --accent-bg for components that read them:
+   .feature-icon, .m3-card.top-accent, .type-name, .variant-label.
+   Convention: Механік = blue, Будівельник = amber, practical labs = green.
+   ========================================================================== */
+.accent-blue   { --accent: var(--accent-blue);   --accent-strong: var(--accent-blue-strong);   --accent-bg: var(--accent-blue-bg); }
+.accent-amber  { --accent: var(--accent-amber);  --accent-strong: var(--accent-amber-strong);  --accent-bg: var(--accent-amber-bg); }
+.accent-green  { --accent: var(--accent-green);  --accent-strong: var(--accent-green-strong);  --accent-bg: var(--accent-green-bg); }
+.accent-purple { --accent: var(--accent-purple); --accent-strong: var(--accent-purple-strong); --accent-bg: var(--accent-purple-bg); }
+.accent-red    { --accent: var(--accent-red);    --accent-strong: var(--accent-red-strong);    --accent-bg: var(--accent-red-bg); }
+.accent-pink   { --accent: var(--accent-pink);   --accent-strong: var(--accent-pink-strong);   --accent-bg: var(--accent-pink-bg); }
+
+/* ==========================================================================
+   Utilities (keep LAST so they override components of equal specificity)
+   Spacing scale: 1 = 0.25rem, 2 = 0.5rem, 3 = 0.75rem, 4 = 1rem, 5 = 1.25rem, 6 = 1.5rem, 8 = 2rem
+   ========================================================================== */
+.m-0  { margin: 0; }
+.mt-0 { margin-top: 0; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-5 { margin-top: 1.25rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+.justify-between { justify-content: space-between; }
+
+.text-primary   { color: var(--md-sys-color-primary); }
+.text-secondary { color: var(--md-sys-color-secondary); }
+.text-tertiary  { color: var(--md-sys-color-tertiary); }
+.text-success   { color: var(--md-sys-color-success); }
+.text-error     { color: var(--md-sys-color-error); }
+.text-muted     { color: var(--md-sys-color-on-surface-variant); }
+.text-outline   { color: var(--md-sys-color-outline); }
+

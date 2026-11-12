@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark" data-course-item="intro" class="presentation-page">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бази даних. СУБД і мова SQL | Вступний курс</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Material Design 3 Stylesheet -->
+  <link rel="stylesheet" href="../css/style.css">
+
+  <!-- Доступ до матеріалів: 1/0 у js/course-config.js -->
+  <script src="../js/course-config.js"></script>
+  <script src="../js/access.js"></script>
+</head>
+<body class="presentation-page">
+
+  <div class="presentation-viewport">
+    <!-- Hub Back Link -->
+    <a href="../index.html" class="hub-back-btn" title="Повернутися на головну курсу">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      <span>Головна курсу</span>
+    </a>
+
+    <!-- Top Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Slides Wrapper -->
+    <main class="slides-wrapper" id="slides-wrapper">
+
+      <!-- ===================================================================
+           SLIDE 1: Title Slide (Hero)
+           =================================================================== -->
+      <section class="slide active" id="slide-1">
+        <div class="slide-hero">
+          <div class="hero-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+            Вступна лекція курсу
+          </div>
+          <h1 class="hero-title">Бази даних. СУБД і мова SQL</h1>
+          <p class="hero-description">
+            Навіщо сучасному веб-додатку база даних, чому світ не живе без них і як організована цифрова пам'ять на прикладі сервісу голосування.
+          </p>
+
+          <div class="hero-meta">
+            <div class="hero-meta-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span><strong>6</strong> оглядових практичних занять</span>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="m3-btn m3-btn-primary" onclick="presentation.next()">
+              <span>Почати презентацію</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 2: Two Types of Memory
+           =================================================================== -->
+      <section class="slide" id="slide-2">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Фундамент комп'ютера</span>
+            <span class="m3-chip">Апаратна основа</span>
+          </div>
+          <h2 class="slide-title">Два типи пам'яті: Де живуть ваші дані?</h2>
+          <p class="slide-subtitle">Перед тим як говорити про бази даних, згадаймо, як процесор комп'ютера взагалі працює з інформацією.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+            <!-- Volatile Memory -->
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge danger">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                </div>
+                <div>
+                  <h3 class="m3-card-title">1. Енергозалежна пам'ять (RAM / ОЗУ)</h3>
+                  <span class="m3-card-subtitle text-error">Очищується при вимкненні живлення</span>
+                </div>
+              </div>
+              <div class="m3-card-body">
+                <p>Швидкий робочий простір процесора, де знаходяться відкриті вкладки браузера, запущені програми та змінні поточних обчислень.</p>
+                <ul class="feature-list">
+                  <li class="pro">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span><strong>Швидкість:</strong> Блискавична (наносекунди). Процесор миттєво зчитує та змінює змінні.</span>
+                  </li>
+                  <li class="con">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span><strong>Вразливість:</strong> Зникає живлення чи падає програма — все очищується в нуль.</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                    <span><strong>Метафора:</strong> Клейкі стікери біля клавіатури. Ідеально для швидких робочих поміток «тут і зараз». Але вони легко губляться і не підходять для довготривалого зберігання інформації.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Non-Volatile Memory -->
+            <div class="m3-card elevated highlight">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge success">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                </div>
+                <div>
+                  <h3 class="m3-card-title">2. Енергонезалежна пам'ять (Storage / Диск)</h3>
+                  <span class="m3-card-subtitle text-success">Зберігає дані без електричного струму</span>
+                </div>
+              </div>
+              <div class="m3-card-body">
+                <p>Фізичні носії: SSD-накопичувачі, NVMe, жорсткі диски (HDD), флеш-пам'ять.</p>
+                <ul class="feature-list">
+                  <li class="pro">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span><strong>Надійність:</strong> Записані байти зберігаються роками, навіть коли сервер вимкнено з розетки.</span>
+                  </li>
+                  <li class="con">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span><strong>Швидкість:</strong> Повільніша за оперативну пам'ять у 100–1000 разів (мікросекунди / мілісекунди).</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                    <span><strong>Метафора:</strong> Друкована книга або записник у сейфі. Потрібен час, щоб записати, зате надійно назавжди.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="m3-callout">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>
+              <strong>Ключова дилема програміста:</strong> Як поєднати космічну швидкість обробки інформації в ОЗУ з абсолютною надійністю збереження на диску?
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 3: The Case Study (Student of the Week App)
+           =================================================================== -->
+      <section class="slide" id="slide-3">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip tertiary">Практичний кейс</span>
+            <span class="m3-chip">Веб-додаток</span>
+          </div>
+          <h2 class="slide-title">Уявімо завдання: Веб-сервіс «Студент тижня» 🏆</h2>
+          <p class="slide-subtitle">Створюємо веб-додаток для нашого коледжу: голосування за найактивнішого студента тижня.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-3col">
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge">👤</div>
+                <h3 class="m3-card-title">1. Профіль студента</h3>
+              </div>
+              <p class="m3-card-body">
+                Будь-який студент може зареєструватися, вказати своє ім'я, групу та відділення, завантажити фото та написати про свої досягнення.
+              </p>
+            </div>
+
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge">🗳️</div>
+                <h3 class="m3-card-title">2. Голосування</h3>
+              </div>
+              <p class="m3-card-body">
+                Одногрупники та викладачі переходять на сторінку студента та тиснуть велику кнопку <strong>«Проголосувати (+1)»</strong>.
+              </p>
+            </div>
+
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge">📊</div>
+                <h3 class="m3-card-title">3. Лідерборд (Рейтинг)</h3>
+              </div>
+              <p class="m3-card-body">
+                Головна сторінка сайту показує актуальний рейтинг студентів, відсортований від найбільшої кількості голосів до найменшої.
+              </p>
+            </div>
+          </div>
+
+          <div class="m3-card filled mt-6">
+            <div class="banner-row justify-between">
+              <div>
+                <strong class="banner-title">Як ми будемо зберігати ці профілі та лічильники голосів?</strong>
+                <p class="banner-text">
+                  Розглянемо найпростішу реалізацію, яку часто роблять новачки — <strong>Версію 1.0</strong>.
+                </p>
+              </div>
+              <button class="m3-btn m3-btn-primary" onclick="presentation.next()">
+                <span>Дивитись Версію 1.0</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 4: Version 1.0 (RAM only)
+           =================================================================== -->
+      <section class="slide" id="slide-4">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Архітектура v1.0</span>
+            <span class="m3-chip error">Без бази даних</span>
+          </div>
+          <h2 class="slide-title">Версія 1.0: "Тримаємо все у пам'яті сервера" (RAM)</h2>
+          <p class="slide-subtitle">Розробник вирішив не ускладнювати і зберіг дані прямо у змінних серверної програми (Python / Node.js).</p>
+        </header>
+
+        <div class="slide-content">
+          <!-- Architecture Flow -->
+          <div class="arch-diagram">
+            <div class="arch-node client">
+              <div class="node-icon">📱</div>
+              <div class="node-title">Браузер студента</div>
+              <div class="node-sub">Клієнт (Frontend)</div>
+            </div>
+
+            <div class="arch-arrow">
+              <span>POST /vote (+1)</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+
+            <div class="arch-node server">
+              <div class="node-icon">⚙️</div>
+              <div class="node-title">Веб-сервер додатку</div>
+              <div class="node-sub">Змінна в ОЗУ: <code>students = [...]</code></div>
+            </div>
+
+            <div class="arch-arrow">
+              <span>GET /leaderboard</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            </div>
+
+            <div class="arch-node unused">
+              <div class="node-icon">💾</div>
+              <div class="node-title">Диск / База даних</div>
+              <div class="node-sub">НЕ ВИКОРИСТОВУЄТЬСЯ</div>
+            </div>
+          </div>
+
+          <div class="grid-2col mt-4">
+            <div class="m3-card">
+              <h4 class="card-heading text-primary">Чому це здається гарною ідеєю?</h4>
+              <ul class="feature-list">
+                <li class="pro">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Простота реалізації:</strong> Створили список у коді — і все працює за 5 хвилин.</span>
+                </li>
+                <li class="pro">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Миттєва швидкість:</strong> Зчитування з ОЗУ відбувається за частки мікросекунди.</span>
+                </li>
+                <li class="pro">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Нуль налаштувань:</strong> Не потрібно встановлювати та адмініструвати жоден сервер БД.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="m3-card danger">
+              <h4 class="card-heading text-error">А що станеться у реальному житті?</h4>
+              <p class="card-text">
+                Сервери у клауді чи в серверній кімнаті — це звичайні комп'ютери.
+                Що трапиться, якщо:
+              </p>
+              <ul class="bullet-list">
+                <li>Вимкнуть світло в датацентрі? ⚡️</li>
+                <li>Операційна система встановить оновлення та перезавантажиться? 🔄</li>
+                <li>У коді сервера виникне помилка, і процес завершиться аварійно? 💥</li>
+              </ul>
+              <strong class="text-error">Перевіримо це на живому експерименті прямо зараз!</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 5: Interactive Crash Test (RAM Version)
+           =================================================================== -->
+      <section class="slide" id="slide-5">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip error">Живий експеримент</span>
+            <span class="m3-chip">Краш-тест v1.0</span>
+          </div>
+          <h2 class="slide-title">💥 Краш-тест Версії 1.0: Спробуйте самі!</h2>
+          <p class="slide-subtitle">Перед вами реальний працюючий віджет нашої Версії 1.0. Віддайте голоси, а потім змоделюйте аварію сервера.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="sim-container" id="ram-sim-container" data-module="SimRAM">
+            <!-- Left: Student App UI -->
+            <div class="sim-panel">
+              <div class="sim-panel-header">
+                <div>
+                  <strong class="sim-panel-title">Додаток «Студент тижня»</strong>
+                  <div class="sim-panel-caption">Турнірна таблиця в реальному часі</div>
+                </div>
+                <span class="sim-status-indicator status-online" id="ram-status">ONLINE (ОЗУ / RAM)</span>
+              </div>
+
+              <!-- Student list -->
+              <div class="sim-student-list" id="ram-student-list">
+                <!-- Injected via JS -->
+              </div>
+
+              <!-- Form for adding a new student -->
+              <div id="ram-add-form" class="sim-add-form" hidden>
+                <div class="sim-form-title text-primary">Новий учасник голосування:</div>
+                <div class="sim-form-fields">
+                  <input type="text" id="ram-student-name" class="sim-input" placeholder="Введіть ПІБ студента" />
+                  <div>
+                    <label class="sim-label" for="ram-student-dept">Відділення:</label>
+                    <select id="ram-student-dept" class="sim-input">
+                      <option value="Механік">Механік</option>
+                      <option value="Будівельник">Будівельник</option>
+                    </select>
+                  </div>
+                  <div class="sim-form-actions">
+                    <button class="m3-btn m3-btn-secondary m3-btn-small" onclick="SimRAM.hideAddForm()">Скасувати</button>
+                    <button class="m3-btn m3-btn-primary m3-btn-small" onclick="SimRAM.submitStudent()">Зберегти</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-toolbar">
+                <button class="m3-btn m3-btn-secondary m3-btn-small" onclick="SimRAM.showAddForm()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Додати учасника
+                </button>
+                <button class="m3-btn m3-btn-secondary m3-btn-small" onclick="SimRAM.reset()">
+                  Скинути демо
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Server Engine & Crash Controls -->
+            <div class="sim-panel">
+              <div class="sim-panel-header">
+                <strong class="sim-panel-title">Серверний процес (RAM)</strong>
+                <span class="sim-panel-meta">PID: 48921</span>
+              </div>
+
+              <div class="sim-controls">
+                <p class="sim-hint">
+                  Всі голоси зараз існують <strong>виключно в мікросхемах оперативної пам'яті</strong> сервера. Натисніть червону кнопку, щоб змоделювати збій живлення:
+                </p>
+
+                <button class="m3-btn m3-btn-danger" id="ram-crash-btn" onclick="SimRAM.crash()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span>⚡️ ВИМКНУТИ ЖИВЛЕННЯ СЕРВЕРА</span>
+                </button>
+
+                <div class="sim-server-visual" id="ram-visual-box">
+                  <div class="sim-console-title text-primary">Термінал сервера:</div>
+                  <div class="console-log" id="ram-console"></div>
+                </div>
+
+                <div class="m3-callout danger compact" id="ram-alert-box" hidden>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <div id="ram-alert-text">
+                    Катастрофа! Сервер перезавантажився і його оперативна пам'ять порожня. Усі 6 голосів та  профілі студентів зникли назавжди. Конкурс зірвано!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 6: Why not plain files (JSON / TXT)?
+           =================================================================== -->
+      <section class="slide" id="slide-6">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip warning">Проміжне рішення</span>
+            <span class="m3-chip">Файлова система</span>
+          </div>
+          <h2 class="slide-title">«А чому б просто не записувати у файл students.txt чи data.json?»</h2>
+          <p class="slide-subtitle">Перша здорова думка кожного студента: якщо диск енергонезалежний, давайте просто скидати все у звичайний файл!</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-3col">
+            <!-- Trap 1: Concurrency -->
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge danger">💥</div>
+                <h3 class="m3-card-title">1. Стан гонитви (Race Condition)</h3>
+              </div>
+              <p class="m3-card-body">
+                Що буде, якщо <strong>100 користувачів одночасно натиснуть «Голосувати»</strong>?<br><br>
+                Файл не можна одночасно безпечно відкривати на запис 100 процесами. Останній запис перезапише всі попередні, і 99 попередніх голосів просто зникнуть, або файл взагалі заблокується операційною системою з помилкою.
+              </p>
+            </div>
+
+            <!-- Trap 2: Performance -->
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge danger">🐢</div>
+                <h3 class="m3-card-title">2. Катастрофічна швидкість</h3>
+              </div>
+              <p class="m3-card-body">
+                Якщо в коледжі декілька тисяч студентів, файл `data.json` буде важити десятки мегабайт.<br><br>
+                Щоб знайти топ-10 лідерів чи профіль одного студента, серверу доведеться <strong>щосекунди зчитувати з диска та парсити гігантський текстовий файл від початку до кінця</strong>. Сервер просто може зависнути від такого навантаження.
+              </p>
+            </div>
+
+            <!-- Trap 3: Corruption -->
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge danger">💔</div>
+                <h3 class="m3-card-title">3. Пошкодження даних (Corruption)</h3>
+              </div>
+              <p class="m3-card-body">
+                Сервер якраз записував у файл новий голос... і саме в цю мілісекунду стався збій.<br><br>
+                Результат: файл обірвався на півслові `{"votes": 4`. Тепер це невалідний JSON, весь файл пошкоджено, і при наступному старті сайт видасть фатальну помилку для всіх користувачів.
+              </p>
+            </div>
+          </div>
+
+          <div class="m3-callout warning">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <strong>Висновок:</strong> Звичайні файли чудово підходять для зображень чи конфігурацій, але абсолютно непридатні для динамічних багатокористувацьких веб-сервісів!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 7: Meet DB & DBMS
+           =================================================================== -->
+      <section class="slide" id="slide-7">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Порятунок</span>
+            <span class="m3-chip success">Правильна інженерія</span>
+          </div>
+          <h2 class="slide-title">Знайомтесь: База Даних (БД) та СУБД</h2>
+          <p class="slide-subtitle">Спеціалізований софт, над створенням якого інженери та науковці працювали останні 50 років.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-3col">
+            <!-- Concept 1: Database -->
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge primary">🗄️</div>
+                <h3 class="m3-card-title">База Даних (БД)</h3>
+              </div>
+              <div class="m3-card-body">
+                <p><strong>Самі структуровані дані.</strong></p>
+                <p class="mt-2">
+                  Це організована таблична інформація: профілі студентів, відділення коледжу, історія голосів, часові мітки та зв'язки між ними.
+                </p>
+              </div>
+            </div>
+
+            <!-- Concept 2: DBMS -->
+            <div class="m3-card elevated highlight">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge success">🛡️</div>
+                <h3 class="m3-card-title">СУБД (DBMS)</h3>
+              </div>
+              <div class="m3-card-body">
+                <p><strong>Система Управління Базами Даних.</strong></p>
+                <p class="mt-2">
+                  Спеціальна високооптимізована програма (сервер), яка керує читанням, безпечним записом на диск, пам'яттю та блокуваннями (PostgreSQL, MySQL, SQLite).
+                </p>
+              </div>
+            </div>
+
+            <!-- Concept 3: SQL -->
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge tertiary">💬</div>
+                <h3 class="m3-card-title">Мова SQL</h3>
+              </div>
+              <div class="m3-card-body">
+                <p><strong>Structured Query Language.</strong></p>
+                <p class="mt-2">
+                  Універсальна стандартизована мова запитів, якою людина або веб-сервер спілкується з СУБД:
+                  <code class="code-snippet">
+                    SELECT * FROM students<br>ORDER BY votes DESC;
+                  </code>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metaphor Banner -->
+          <div class="m3-card filled-high mt-6">
+            <div class="banner-row">
+              <div class="banner-emoji">🏛️</div>
+              <div>
+                <strong class="banner-title">Проста аналогія: «Банківське сховище»</strong>
+                <p class="banner-text">
+                  <strong>БД</strong> — це гроші та сейфи з рахунками клієнтів.<br>
+                  <strong>СУБД</strong> — це охорона, броньовані двері та персонал банку, який нікому не дозволяє вкрасти гроші чи отримати дані вашого рахунку.<br>
+                  <strong>SQL</strong> — це офіційний бланк заяви, за яким ви звертаєтесь до банку («Видати залишок по рахунку #42»).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 8: Superpowers of DBMS
+           =================================================================== -->
+      <section class="slide" id="slide-8">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip success">Переваги</span>
+            <span class="m3-chip">Чому це працює</span>
+          </div>
+          <h2 class="slide-title">Суперсили СУБД: Які проблеми вона вирішує</h2>
+          <p class="slide-subtitle">Чому жоден серйозний сервіс (Instagram, Uber, Дія, Amazon) не існує без СУБД.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge success">🛡️</div>
+                <div>
+                  <h4 class="m3-card-title">1. Гарантована персистентність (ACID / WAL)</h4>
+                  <span class="m3-card-subtitle text-success">Write-Ahead Logging</span>
+                </div>
+              </div>
+              <p class="m3-card-body">
+                СУБД використовує журнал транзакцій. Перш ніж підтвердити клієнту успіх, запис фіксується в журналі на диску. Якщо в наступну наносекунду з сервером щось станеться — після рестарту СУБД автоматично відновить всі дані до останнього біта.
+              </p>
+            </div>
+
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge success">⚡️</div>
+                <div>
+                  <h4 class="m3-card-title">2. Паралельний доступ (Concurrency)</h4>
+                  <span class="m3-card-subtitle text-success">Тисячі запитів на секунду</span>
+                </div>
+              </div>
+              <p class="m3-card-body">
+                СУБД знає, як блокувати окремі рядки таблиці, а не всю базу. Якщо 1000 людей одночасно голосують за різних студентів, СУБД паралельно оновлює їхні лічильники без жодних конфліктів та перезаписів.
+              </p>
+            </div>
+
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge success">🚀</div>
+                <div>
+                  <h4 class="m3-card-title">3. Індекси та блискавичний пошук</h4>
+                  <span class="m3-card-subtitle text-success">Швидкість O(log N) замість O(N)</span>
+                </div>
+              </div>
+              <p class="m3-card-body">
+                Як предметний покажчик у кінці енциклопедії. СУБД не сканує мільйон студентів по черзі: за допомогою спеціальних структур даних (B-Tree індексів) вона знаходить потрібного студента за 0.001 секунди.
+              </p>
+            </div>
+
+            <div class="m3-card elevated">
+              <div class="m3-card-header">
+                <div class="m3-icon-badge success">🔐</div>
+                <div>
+                  <h4 class="m3-card-title">4. Цілісність, безпека та зв'язки</h4>
+                  <span class="m3-card-subtitle text-success">Реляційні обмеження</span>
+                </div>
+              </div>
+              <p class="m3-card-body">
+                Неможливо віддати голос за студента, якого не існує. Неможливо створити студента з негативною кількістю голосів. СУБД автоматично контролює правила валідації на рівні ядра системи.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 9: Interactive Crash Test (DB Version)
+           =================================================================== -->
+      <section class="slide" id="slide-9">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip success">Живий експеримент</span>
+            <span class="m3-chip">Краш-тест v2.0 (СУБД)</span>
+          </div>
+          <h2 class="slide-title">🛡️ Краш-тест Версії 2.0: Тепер із Базою Даних!</h2>
+          <p class="slide-subtitle">Повторимо сценарій з аварією сервера, але тепер усі голоси записуються через SQL до СУБД на диск.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="sim-container" id="db-sim-container" data-module="SimDB">
+            <!-- Left: App UI with DB connection -->
+            <div class="sim-panel">
+              <div class="sim-panel-header">
+                <div>
+                  <strong class="sim-panel-title">Додаток v2.0 (SQL Backend)</strong>
+                  <div class="sim-panel-caption">З'єднано з PostgreSQL через TCP/IP</div>
+                </div>
+                <span class="sim-status-indicator status-online" id="db-status">ONLINE (СУБД АКТИВНА)</span>
+              </div>
+
+              <!-- Student list -->
+              <div class="sim-student-list" id="db-student-list">
+                <!-- Injected via JS -->
+              </div>
+
+              <!-- Form for adding a new student to DB -->
+              <div id="db-add-form" class="sim-add-form" hidden>
+                <div class="sim-form-title text-secondary">Новий учасник (запис у базу даних):</div>
+                <div class="sim-form-fields">
+                  <input type="text" id="db-student-name" class="sim-input" placeholder="Введіть ПІБ студента" />
+                  <div>
+                    <label class="sim-label" for="db-student-dept">Відділення:</label>
+                    <select id="db-student-dept" class="sim-input">
+                      <option value="Механік">Механік</option>
+                      <option value="Будівельник">Будівельник</option>
+                    </select>
+                  </div>
+                  <div class="sim-form-actions">
+                    <button class="m3-btn m3-btn-secondary m3-btn-small" onclick="SimDB.hideAddForm()">Скасувати</button>
+                    <button class="m3-btn m3-btn-primary m3-btn-small" onclick="SimDB.submitStudent()">Зберегти в БД</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-toolbar">
+                <button class="m3-btn m3-btn-secondary m3-btn-small" onclick="SimDB.showAddForm()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Додати учасника
+                </button>
+                <button class="m3-btn m3-btn-secondary m3-btn-small" onclick="SimDB.reset()">
+                  Скинути демо
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Database Engine & Crash Controls -->
+            <div class="sim-panel">
+              <div class="sim-panel-header">
+                <strong class="sim-panel-title">СУБД Engine (PostgreSQL / Disk)</strong>
+                <span class="sim-panel-meta">Storage: NVMe SSD</span>
+              </div>
+
+              <div class="sim-controls">
+                <p class="sim-hint">
+                  Голосуйте за кандидатів. СУБД негайно виконує транзакцію та скидає зміни на диск. Натисніть кнопку аварії:
+                </p>
+
+                <button class="m3-btn m3-btn-danger" id="db-crash-btn" onclick="SimDB.crash()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span>⚡️ ЗБІЙ ЖИВЛЕННЯ СЕРВЕРА</span>
+                </button>
+
+                <div class="sim-server-visual" id="db-visual-box">
+                  <div class="sim-console-title text-secondary">СУБД та SQL Журнал запитів:</div>
+                  <div class="console-log" id="db-console"></div>
+                </div>
+
+                <div class="m3-callout success compact" id="db-alert-box" hidden>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <div>
+                    <strong>Ідеальний результат!</strong> Сервер перезавантажився, підключився до СУБД і виконав <code>SELECT</code>. Усі голоси та рейтинги залишились незмінними. 0% втрат даних!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 10: 3-Tier Architecture
+           =================================================================== -->
+      <section class="slide" id="slide-10">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Сучасний веб</span>
+            <span class="m3-chip">Архітектура</span>
+          </div>
+          <h2 class="slide-title">Трирівнева архітектура сучасних веб-додатків</h2>
+          <p class="slide-subtitle">Як побудовані практично всі сайти та мобільні сервіси у світі (3-Tier Architecture).</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="arch-diagram spacious">
+            <!-- Tier 1 -->
+            <div class="arch-node client">
+              <div class="node-icon">💻</div>
+              <div class="node-title">1. Клієнт (Frontend)</div>
+              <div class="node-sub">Браузер / Додаток на телефоні</div>
+              <div class="node-tech">HTML • CSS • JavaScript</div>
+            </div>
+
+            <div class="arch-arrow">
+              <span>HTTP / HTTPS</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+
+            <!-- Tier 2 -->
+            <div class="arch-node server">
+              <div class="node-icon">⚙️</div>
+              <div class="node-title">2. Сервер логіки (Backend)</div>
+              <div class="node-sub">Бізнес-правила та безпека</div>
+              <div class="node-tech">Node.js • Python • Java • PHP</div>
+            </div>
+
+            <div class="arch-arrow">
+              <span>SQL Запити</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="arch-node storage">
+              <div class="node-icon">🗄️</div>
+              <div class="node-title">3. База даних (СУБД)</div>
+              <div class="node-sub">Єдине джерело правди</div>
+              <div class="node-tech">PostgreSQL • MySQL • SQLite</div>
+            </div>
+          </div>
+
+          <div class="grid-3col mt-4">
+            <div class="m3-card">
+              <h4 class="card-heading text-secondary">За що відповідає Frontend?</h4>
+              <p class="card-text">
+                Показати кнопки, фотографії студентів, форму голосування та гарний дизайн користувачеві.
+              </p>
+            </div>
+
+            <div class="m3-card">
+              <h4 class="card-heading text-primary">За що відповідає Backend?</h4>
+              <p class="card-text">
+                Перевірити, чи має право користувач голосувати (авторизація), захистити від накрутки голосів та сформувати SQL запит.
+              </p>
+            </div>
+
+            <div class="m3-card">
+              <h4 class="card-heading text-tertiary">За що відповідає СУБД?</h4>
+              <p class="card-text">
+                Надійно зберегти дані, забезпечити одночасний доступ мільйонів користувачів та миттєво віддати лідерборд.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 11: Course Roadmap (6 Practical Labs)
+           =================================================================== -->
+      <section class="slide" id="slide-11">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip tertiary">Навчальний план</span>
+            <span class="m3-chip">Практичні навички</span>
+          </div>
+          <h2 class="slide-title">Дорожня карта нашого курсу: 6 практичних занять</h2>
+        </header>
+
+        <div class="slide-content">
+          <div class="roadmap-grid">
+            <!-- Lab 1 -->
+            <div class="roadmap-card">
+              <div class="roadmap-number">Практична 01</div>
+              <h3 class="roadmap-title">Знайомство з СУБД та перша таблиця</h3>
+              <p class="roadmap-desc">
+                Реляційна модель. Типи даних. Первинний ключ. Створюємо таблицю студентів за допомогою команди <code>CREATE TABLE</code>.
+              </p>
+            </div>
+
+            <!-- Lab 2 -->
+            <div class="roadmap-card">
+              <div class="roadmap-number">Практична 02</div>
+              <h3 class="roadmap-title">Вставка та вибірка даних з фільтрацією</h3>
+              <p class="roadmap-desc">
+                Команди <code>INSERT</code>, <code>SELECT</code>, <code>WHERE</code>. Наповнюємо таблицю студентів і шукаємо записи за умовою.
+              </p>
+            </div>
+
+            <!-- Lab 3 -->
+            <div class="roadmap-card">
+              <div class="roadmap-number">Практична 03</div>
+              <h3 class="roadmap-title">Зміна, сортування та обмеження даних</h3>
+              <p class="roadmap-desc">
+                Команди <code>UPDATE</code>, <code>DELETE</code>, сортування <code>ORDER BY</code> та обмеження <code>LIMIT</code>. Знаходимо топ-лідерів рейтингу.
+              </p>
+            </div>
+
+            <!-- Lab 4 -->
+            <div class="roadmap-card accent-secondary">
+              <div class="roadmap-number">Практична 04</div>
+              <h3 class="roadmap-title">Зв'язки між таблицями (JOIN)</h3>
+              <p class="roadmap-desc">
+                Реляційна модель: як розділити студентів та голосування. Зовнішні ключі (<code>FOREIGN KEY</code>) та об'єднання даних за допомогою <code>JOIN</code>.
+              </p>
+            </div>
+
+            <!-- Lab 5 -->
+            <div class="roadmap-card accent-secondary">
+              <div class="roadmap-number">Практична 05</div>
+              <h3 class="roadmap-title">Агрегація даних та бізнес-аналітика</h3>
+              <p class="roadmap-desc">
+                Функції <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, групування <code>GROUP BY</code>. Рахуємо статистику: яка група набрала найбільше голосів.
+              </p>
+            </div>
+
+            <!-- Lab 6 -->
+            <div class="roadmap-card accent-tertiary">
+              <div class="roadmap-number">Практична 06</div>
+              <h3 class="roadmap-title">Підсумковий проект</h3>
+              <p class="roadmap-desc">
+                Розробка своєї власної невеличкої БД для реального веб-додатку.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 12: Summary
+           =================================================================== -->
+      <section class="slide" id="slide-12">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip success">Підсумки</span>
+          </div>
+          <h2 class="slide-title">Головні висновки: База даних — це серце цифрового світу</h2>
+          <p class="slide-subtitle">Коротке резюме вступної лекції та перехід до практичної частини.</p>
+        </header>
+
+        <div class="slide-content">
+          <div class="m3-card highlight summary-card">
+            <h3 class="summary-title">
+              💡 Що ми дізналися сьогодні:
+            </h3>
+            <ul class="feature-list relaxed">
+              <li class="pro">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>ОЗУ швидка, але ненадійна:</strong> Будь-який збій або перезапуск стирає все безповоротно.</span>
+              </li>
+              <li class="pro">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Звичайні файли — пастка для вебу:</strong> Вони ламаються при одночасному доступі та гальмують на великих обсягах.</span>
+              </li>
+              <li class="pro">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>СУБД гарантує персистентність:</strong> Навіть коли сервер падає, дані залишаються неушкодженими.</span>
+              </li>
+              <li class="pro">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>SQL — мова успіху:</strong> Знаючи базовий SQL, ви можете діставати аналітику з будь-якої корпоративної системи.</span>
+              </li>
+            </ul>
+
+            <div class="action-row">
+              <button class="m3-btn m3-btn-primary" onclick="presentation.goToSlide(0)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                <span>На початок презентації</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===================================================================
+         Floating Material Navigation Bar (Bottom)
+         =================================================================== -->
+    <nav class="presentation-bar" aria-label="Slide Navigation">
+      <button class="bar-btn" id="btn-prev" title="Попередній слайд (←)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="slide-counter" id="slide-counter">01 / 12</div>
+
+      <button class="bar-btn" id="btn-next" title="Наступний слайд (→ / Space)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/simulations.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>

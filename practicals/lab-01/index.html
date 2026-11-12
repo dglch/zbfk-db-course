@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark" data-course-item="lab-01" class="presentation-page">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Практична 01: Реляційна модель та CREATE TABLE | SQL Курс</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Material Design 3 Stylesheet -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- Доступ до матеріалів: 1/0 у js/course-config.js -->
+  <script src="../../js/course-config.js"></script>
+  <script src="../../js/access.js"></script>
+</head>
+<body class="presentation-page">
+
+  <div class="presentation-viewport">
+    <!-- Hub Back Link -->
+    <a href="../../index.html" class="hub-back-btn" title="Повернутися на головну курсу">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      <span>Головна курсу</span>
+    </a>
+
+    <!-- Top Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Slides Wrapper -->
+    <main class="slides-wrapper" id="slides-wrapper">
+
+      <!-- ===================================================================
+           SLIDE 1: Hero / Title Slide
+           =================================================================== -->
+      <section class="slide active" id="slide-1">
+        <div class="slide-hero">
+          <div class="hero-pill success">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Практична робота №01
+          </div>
+          <h1 class="hero-title">Реляційна модель та створення таблиць</h1>
+          <p class="hero-description">
+            Таблиці, типи даних SQL, первинний ключ та обмеження. Створюємо першу таблицю для нашого веб-застосунку «Студент тижня» — список учасників голосування.
+          </p>
+
+          <div class="hero-chips">
+            <span class="audience-chip">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              Проєкт «Студент тижня»
+            </span>
+            <span class="audience-chip">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              PlayCode SQL Editor
+            </span>
+          </div>
+
+          <div class="action-row">
+            <button class="m3-btn m3-btn-primary" onclick="presentation.next()">
+              <span>Почати практичну</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-tonal">
+              <span>Відкрити PlayCode ↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 2: What is Relational Model?
+           =================================================================== -->
+      <section class="slide" id="slide-2">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Концепція даних</span>
+          </div>
+          <h2 class="slide-title">Що таке реляційна модель даних?</h2>
+          <p class="slide-subtitle">
+            У реляційній базі вся інформація зберігається в таблицях. Кожна таблиця описує один вид об'єктів.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <!-- Explanation Card -->
+            <div class="m3-card justify-between">
+              <div>
+                <h3 class="card-heading text-primary mb-4">
+                  Анатомія реляційної таблиці
+                </h3>
+                <ul class="feature-list">
+                  <li>
+                    <span class="feature-icon accent-blue">📊</span>
+                    <span><strong>Таблиця (Table)</strong> — дані про однотипні об'єкти. У «Студенті тижня» це, наприклад, усі учасники голосування.</span>
+                  </li>
+                  <li>
+                    <span class="feature-icon accent-amber">⬇️</span>
+                    <span><strong>Стовпчик (Column / Поле)</strong> — одна властивість об'єкта: ПІБ, група, кількість голосів. Кожен стовпчик має свій <em>тип даних</em>.</span>
+                  </li>
+                  <li>
+                    <span class="feature-icon accent-green">➡️</span>
+                    <span><strong>Рядок (Row / Запис)</strong> — один конкретний об'єкт: студентка Анастасія Мельник з групи Б-11.</span>
+                  </li>
+                  <li>
+                    <span class="feature-icon accent-purple">🔑</span>
+                    <span><strong>Первинний ключ (Primary Key)</strong> — стовпчик (зазвичай <code>id</code>), значення якого ніколи не повторюється. Навіть двох студентів з однаковим ПІБ не сплутати.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="m3-callout">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <div>
+                  <strong>Чому «реляційна»?</strong> Реляційною база даних називається тому, що її дані зберігаються у вигляді таблиць, між якими встановлюються зв’язки (від англ. <em>relation</em> – відношення).
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Table Example -->
+            <div class="m3-card">
+              <div class="card-toolbar">
+                <span class="table-caption">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                  Приклад: таблиця <code>students</code>
+                </span>
+                <span class="topic-tag">3 записи</span>
+              </div>
+
+              <div class="m3-table-wrapper m-0">
+                <table class="m3-table">
+                  <thead>
+                    <tr>
+                      <th>id <span class="pk-chip">PK</span><small>SERIAL</small></th>
+                      <th>full_name<small>TEXT</small></th>
+                      <th>group_name<small>TEXT</small></th>
+                      <th>votes<small>INTEGER</small></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="pk-value">1</td>
+                      <td>Олександр Коваленко</td>
+                      <td>М-21</td>
+                      <td>12</td>
+                    </tr>
+                    <tr>
+                      <td class="pk-value">2</td>
+                      <td>Анастасія Мельник</td>
+                      <td>Б-11</td>
+                      <td>9</td>
+                    </tr>
+                    <tr>
+                      <td class="pk-value">3</td>
+                      <td>Дмитро Бондаренко</td>
+                      <td>М-32</td>
+                      <td>5</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="card-note mt-4">
+                💡 У кожному стовпчику — значення одного типу: у <code>votes</code> лише цілі числа, у <code>full_name</code> лише текст. Саме таку таблицю ви створите в цій практичній.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 3: PlayCode SQL Editor Guide
+           =================================================================== -->
+      <section class="slide" id="slide-3">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Інструментарій</span>
+          </div>
+          <h2 class="slide-title">Онлайн-середовище PlayCode SQL Editor</h2>
+          <p class="slide-subtitle">
+            Працюємо у браузері за адресою <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="text-link">playcode.io/sql-editor</a>. Усередині працює справжня СУБД <strong>PostgreSQL</strong>, нічого встановлювати не потрібно.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-3col">
+
+            <div class="m3-card top-accent accent-blue">
+              <div class="card-emoji">💻</div>
+              <h3 class="card-heading">1. Редактор коду</h3>
+              <p class="card-text">
+                Вкладка <code>main.sql</code>. Тут ви пишете SQL-команди (сьогодні це <code>CREATE TABLE</code>) і коментар зі своїм ПІБ.
+              </p>
+            </div>
+
+            <div class="m3-card top-accent accent-green">
+              <div class="card-emoji">⚡</div>
+              <h3 class="card-heading">2. Run і Auto-run</h3>
+              <p class="card-text">
+                <strong>Run</strong> (або <strong>Ctrl + Enter</strong>) виконує весь код з редактора. Перемикач <strong>Auto-run</strong> запускає код автоматично після кожної зміни.
+              </p>
+            </div>
+
+            <div class="m3-card top-accent accent-purple">
+              <div class="card-emoji">📋</div>
+              <h3 class="card-heading">3. Database і Console</h3>
+              <p class="card-text">
+                <strong>Database</strong> показує список створених таблиць і структуру кожної: колонки, типи, позначку <code>PK</code>. <strong>Console</strong> показує службові повідомлення і тексти помилок.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="m3-callout warning mt-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <strong>PlayCode пам'ятає ваші таблиці</strong> навіть після перезавантаження сторінки. Тому повторний запуск <code>CREATE TABLE</code> видасть помилку «таблиця вже існує». Як це виправити — на слайді «Типові помилки».
+            </div>
+          </div>
+
+          <div class="hub-tool-banner compact mt-5">
+            <div class="tool-banner-info">
+              <div class="tool-banner-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <div>
+                <strong class="banner-title">Порада для зручності:</strong>
+                <p class="tool-banner-desc">
+                  Розділіть екран навпіл: зліва презентація з інструкціями, справа — PlayCode.
+                </p>
+              </div>
+            </div>
+            <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-primary">
+              <span>Відкрити PlayCode</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 4: Basic SQL Data Types (PostgreSQL)
+           =================================================================== -->
+      <section class="slide" id="slide-4">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Типізація SQL</span>
+          </div>
+          <h2 class="slide-title">Основні типи даних у SQL</h2>
+          <p class="slide-subtitle">
+            Створюючи стовпчик, ми пояснюємо СУБД, які дані там зберігатимуться. Тоді вона не дозволить записати текст у поле для чисел.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="m3-table-wrapper m-0">
+            <table class="m3-table">
+              <thead>
+                <tr>
+                  <th style="width: 16%;">Тип даних</th>
+                  <th style="width: 30%;">Що зберігає</th>
+                  <th style="width: 24%;">Приклади значень</th>
+                  <th style="width: 30%;">Де знадобиться у «Студенті тижня»</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="type-name accent-amber">INTEGER</strong></td>
+                  <td>Цілі числа без дробової частини</td>
+                  <td><code>0</code>, <code>12</code>, <code>150</code></td>
+                  <td>Кількість голосів <code>votes</code></td>
+                </tr>
+                <tr>
+                  <td><strong class="type-name accent-red">SERIAL</strong></td>
+                  <td>Ціле число, яке СУБД заповнює сама: 1, 2, 3… (лічильник PostgreSQL)</td>
+                  <td>не вказуємо, СУБД додасть сама</td>
+                  <td>Номер запису <code>id</code></td>
+                </tr>
+                <tr>
+                  <td><strong class="type-name accent-blue">TEXT</strong></td>
+                  <td>Текст будь-якої довжини</td>
+                  <td><code>'Анастасія Мельник'</code>, <code>'М-21'</code></td>
+                  <td>ПІБ, група, email, досягнення</td>
+                </tr>
+                <tr>
+                  <td><strong class="type-name accent-pink">REAL</strong></td>
+                  <td>Дробові числа (з десятковою крапкою)</td>
+                  <td><code>4.75</code>, <code>10.5</code></td>
+                  <td>Середній бал, відсоток голосів</td>
+                </tr>
+                <tr>
+                  <td><strong class="type-name accent-green">BOOLEAN</strong></td>
+                  <td>Логічне значення: так / ні</td>
+                  <td><code>TRUE</code> або <code>FALSE</code></td>
+                  <td>Чи бере студент участь у голосуванні?</td>
+                </tr>
+                <tr>
+                  <td><strong class="type-name accent-purple">DATE</strong></td>
+                  <td>Календарна дата у форматі РРРР-ММ-ДД</td>
+                  <td><code>'2026-09-01'</code></td>
+                  <td>Дата реєстрації, початок тижня голосування</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="m3-callout mt-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>
+              <strong>Правило лапок:</strong> текст і дати — завжди в <strong>одинарних</strong> лапках: <code>'М-21'</code>, <code>'2026-09-01'</code>. Числа і <code>TRUE</code> / <code>FALSE</code> пишуться без лапок. Подвійні лапки <code>"…"</code> у PostgreSQL означають назву стовпчика, а не текст.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 5: CREATE TABLE Syntax and Constraints
+           =================================================================== -->
+      <section class="slide" id="slide-5">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Синтаксис DDL</span>
+          </div>
+          <h2 class="slide-title">Команда CREATE TABLE та обмеження (Constraints)</h2>
+          <p class="slide-subtitle">
+            <code>CREATE TABLE</code> задає структуру нової таблиці. Обмеження — це правила, які захищають таблицю від невірних даних або даних, що не відповідають вимогам.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <!-- Code Template -->
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Шаблон синтаксису
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-kw">CREATE TABLE</span> назва_таблиці (
+    колонка_1 <span class="sql-type">SERIAL</span> <span class="sql-kw">PRIMARY KEY</span>,
+    колонка_2 <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,
+    колонка_3 <span class="sql-type">TEXT</span> <span class="sql-kw">UNIQUE</span>,
+    колонка_4 <span class="sql-type">INTEGER</span> <span class="sql-kw">DEFAULT</span> <span class="sql-num">0</span>
+);</code></pre>
+              </div>
+
+              <div class="m3-callout">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div>
+                  Колонки розділяються комами <code>,</code>. Після останньої колонки перед <code>)</code> кома <strong>не ставиться</strong>. Команда закінчується крапкою з комою <code>;</code>.
+                </div>
+              </div>
+            </div>
+
+            <!-- Constraints Explanation -->
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">
+                Ключові обмеження (Constraints)
+              </h3>
+              <ul class="feature-list">
+                <li>
+                  <span class="feature-icon label accent-amber">PK</span>
+                  <span><strong>PRIMARY KEY</strong> — первинний ключ. Значення унікальне і не може бути порожнім (як номер студентського квитка).</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-red">SR</span>
+                  <span><strong>SERIAL</strong> — автонумерація 1, 2, 3… Разом з <code>PRIMARY KEY</code> дає ідеальний <code>id</code>: його не треба вигадувати самому.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-blue">NN</span>
+                  <span><strong>NOT NULL</strong> — поле обов'язкове, порожнім залишити не можна.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-purple">UQ</span>
+                  <span><strong>UNIQUE</strong> — повтори заборонені: два студенти не можуть мати однаковий email.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-green">DF</span>
+                  <span><strong>DEFAULT &lt;значення&gt;</strong> — значення за замовчуванням, якщо при додаванні рядка його не вказали (новий учасник має 0 голосів).</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 6: Demo Example (CREATE TABLE)
+           =================================================================== -->
+      <section class="slide" id="slide-6">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Живий зразок коду</span>
+          </div>
+          <h2 class="slide-title">Зразок: таблиця тижнів голосування</h2>
+          <p class="slide-subtitle">
+            Застосунку треба знати дати кожного тижня конкурсу. Скопіюйте скрипт у PlayCode, запустіть і відкрийте вкладку Database.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="code-box mt-0">
+            <div class="code-box-header">
+              <span class="code-box-lang">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                демо-скрипт: voting_weeks
+              </span>
+              <button class="code-copy-btn" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Копіювати код</span>
+              </button>
+            </div>
+            <pre><code><span class="sql-comment">-- Прибираємо стару версію таблиці, щоб скрипт можна було запускати повторно</span>
+<span class="sql-kw">DROP TABLE IF EXISTS</span> voting_weeks;
+
+<span class="sql-kw">CREATE TABLE</span> voting_weeks (
+    id <span class="sql-type">SERIAL</span> <span class="sql-kw">PRIMARY KEY</span>,            <span class="sql-comment">-- номер тижня, СУБД рахує сама</span>
+    title <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,              <span class="sql-comment">-- назва: 'Тиждень 1'</span>
+    start_date <span class="sql-type">DATE</span> <span class="sql-kw">NOT NULL</span>,         <span class="sql-comment">-- початок голосування</span>
+    end_date <span class="sql-type">DATE</span> <span class="sql-kw">NOT NULL</span>,           <span class="sql-comment">-- кінець голосування</span>
+    prize <span class="sql-type">TEXT</span> <span class="sql-kw">DEFAULT</span> <span class="sql-str">'Грамота'</span>,     <span class="sql-comment">-- нагорода переможцю</span>
+    is_open <span class="sql-type">BOOLEAN</span> <span class="sql-kw">DEFAULT</span> <span class="sql-kw">TRUE</span>      <span class="sql-comment">-- чи можна зараз голосувати</span>
+);</code></pre>
+          </div>
+
+          <div class="code-footer">
+            <p class="card-text m-0">
+              🔍 У вкладці <strong>Database</strong> з'явиться таблиця <code>voting_weeks</code> з 6 колонками. Біля <code>id</code> стоїть позначка <code>PK</code>, а тип показано як <code>INTEGER</code>: <code>SERIAL</code> — це <code>INTEGER</code> з автоматичним лічильником.
+            </p>
+            <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-tonal">
+              <span>Спробувати в PlayCode ↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 7: Common Errors
+           =================================================================== -->
+      <section class="slide" id="slide-7">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip error">Типові помилки</span>
+          </div>
+          <h2 class="slide-title">Червоне повідомлення? Розшифровуємо</h2>
+          <p class="slide-subtitle">
+            Помилка — це не катастрофа: СУБД просто відмовилася виконувати команду і нічого не зіпсувала. Текст помилки в Console підказує, де шукати проблему.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="m3-table-wrapper m-0">
+            <table class="m3-table compact">
+              <thead>
+                <tr>
+                  <th style="width: 38%;">Повідомлення PostgreSQL</th>
+                  <th style="width: 30%;">Що сталося</th>
+                  <th style="width: 32%;">Як виправити</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>relation "students" already exists</code></td>
+                  <td>Таблиця вже створена під час попереднього запуску</td>
+                  <td>Почніть скрипт з <code>DROP TABLE IF EXISTS students;</code></td>
+                </tr>
+                <tr>
+                  <td><code>syntax error at or near ")"</code></td>
+                  <td>Зайва кома після останньої колонки</td>
+                  <td>Приберіть кому перед <code>)</code></td>
+                </tr>
+                <tr>
+                  <td><code>syntax error at or near "group_name"</code></td>
+                  <td>Пропущена кома перед названою колонкою</td>
+                  <td>Поставте кому в кінці попереднього рядка</td>
+                </tr>
+                <tr>
+                  <td><code>type "integr" does not exist</code></td>
+                  <td>Помилка в назві типу даних</td>
+                  <td>Перевірте написання: <code>INTEGER</code>, <code>TEXT</code>, <code>DATE</code>…</td>
+                </tr>
+                <tr>
+                  <td><code>column "is_active" is of type boolean but default expression is of type integer</code></td>
+                  <td><code>DEFAULT 1</code> для логічного поля</td>
+                  <td>Пишіть <code>DEFAULT TRUE</code> або <code>DEFAULT FALSE</code></td>
+                </tr>
+                <tr>
+                  <td><code>column "email" specified more than once</code></td>
+                  <td>Дві колонки з однаковою назвою</td>
+                  <td>Перейменуйте або видаліть зайву</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="m3-callout warning mt-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <code>DROP TABLE</code> видаляє таблицю <strong>разом з усіма даними</strong>. У навчальному скрипті це зручно: кожен запуск будує таблицю з нуля. На справжньому сервері так не роблять.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 8: Practical Task (single variant)
+           =================================================================== -->
+      <section class="slide" id="slide-8">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Практичне завдання</span>
+            <span class="m3-chip tertiary">Студент тижня</span>
+          </div>
+          <h2 class="slide-title">Створіть таблицю учасників голосування</h2>
+          <p class="slide-subtitle">
+            Головна таблиця нашого застосунку: профілі студентів і лічильник голосів. Сьогодні створюємо лише її структуру — дані додамо в наступній практичній.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div class="m3-card top-accent accent-blue">
+              <div class="card-toolbar">
+                <span class="variant-label">Завдання</span>
+                <span class="audience-chip compact">🏆 Студент тижня</span>
+              </div>
+              <h3 class="card-heading">
+                Таблиця <code>students</code>
+              </h3>
+              <ul class="bullet-list">
+                <li><code>id</code> — <code>SERIAL PRIMARY KEY</code></li>
+                <li><code>full_name</code> — <code>TEXT NOT NULL</code> (ПІБ)</li>
+                <li><code>group_name</code> — <code>TEXT NOT NULL</code> (група, напр. 'М-21')</li>
+                <li><code>email</code> — <code>TEXT UNIQUE</code> (пошта для входу)</li>
+                <li><code>achievements</code> — <code>TEXT</code> (за що номінують)</li>
+                <li><code>votes</code> — <code>INTEGER DEFAULT 0</code> (кількість голосів)</li>
+                <li><code>is_active</code> — <code>BOOLEAN DEFAULT TRUE</code> (бере участь)</li>
+                <li><code>registered_at</code> — <code>DATE NOT NULL</code> (дата реєстрації)</li>
+              </ul>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">Порядок виконання</h3>
+              <ul class="bullet-list">
+                <li>Угорі скрипту — коментар з ПІБ і групою (зразок на наступному слайді).</li>
+                <li>Рядок <code>DROP TABLE IF EXISTS students;</code>, далі ваш <code>CREATE TABLE students (…);</code></li>
+                <li>Запустіть код (Run) і переконайтеся, що в Console немає помилок.</li>
+                <li>Відкрийте вкладку <strong>Database</strong> → таблиця <code>students</code> у списку TABLES.</li>
+              </ul>
+
+              <div class="m3-callout success mt-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <div>
+                  <strong>Перевірте себе:</strong> у блоці STRUCTURE має бути <strong>8 колонок</strong>, позначка <code>PK</code> біля <code>id</code> і правильні типи. <code>SERIAL</code> там показано як <code>INTEGER</code> — так і має бути.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 9: Control Questions & Conclusion
+           =================================================================== -->
+      <section class="slide" id="slide-9">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Контрольні запитання</span>
+          </div>
+          <h2 class="slide-title">Контрольні запитання та висновок</h2>
+          <p class="slide-subtitle">
+            Дайте письмові відповіді на 5 запитань і зробіть короткий висновок. Можна від руки (фото) або у файлі .docx.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div class="m3-card top-accent accent-purple">
+              <div class="card-toolbar">
+                <span class="variant-label">5 запитань</span>
+              </div>
+              <ol class="bullet-list relaxed">
+                <li>Що таке реляційна база даних? Що в таблиці називають стовпчиком, а що — рядком?</li>
+                <li>Які типи даних ви використали в таблиці <code>students</code>? Чому для <code>votes</code> обрано <code>INTEGER</code>, а для <code>registered_at</code> — <code>DATE</code>?</li>
+                <li>Для чого потрібен первинний ключ (<code>PRIMARY KEY</code>)? Чому для <code>id</code> зручно використовувати <code>SERIAL</code>?</li>
+                <li>Чим відрізняються обмеження <code>NOT NULL</code>, <code>UNIQUE</code> і <code>DEFAULT</code>? Наведіть приклад кожного з вашої таблиці.</li>
+                <li>Навіщо на початку скрипту пишуть <code>DROP TABLE IF EXISTS</code>? Чому так не роблять на справжньому сервері?</li>
+              </ol>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">Висновок</h3>
+              <p class="card-text">
+                3–5 речень своїми словами: чого ви навчилися, що вдалося, з якими труднощами зіткнулися.
+              </p>
+              <div class="m3-callout compact mt-2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <div>
+                  <em>Наприклад:</em> «Під час практичної роботи я навчився(лася) створювати таблицю командою CREATE TABLE… Найскладнішим було… Тепер я розумію, навіщо…»
+                </div>
+              </div>
+
+              <h3 class="card-heading text-primary mt-5">Як оформити</h3>
+              <ul class="bullet-list">
+                <li>Угорі — ПІБ, група і «Практична робота №1».</li>
+                <li><strong>Від руки:</strong> пишіть розбірливо, фото — рівне, світле, весь текст має читатися добре.</li>
+                <li><strong>Або файл .docx</strong> (Word чи Google Docs → «Завантажити як .docx»).</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 10: Classroom Submission (code + table structure)
+           =================================================================== -->
+      <section class="slide" id="slide-10">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip success">Звітність</span>
+          </div>
+          <h2 class="slide-title">Що здати в Classroom</h2>
+          <p class="slide-subtitle">
+            2 скріншоти з PlayCode + відповіді на контрольні запитання з висновком. Усе прикріпіть до одного завдання в Google Classroom.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <!-- Step 1: Script skeleton + where to find the structure -->
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    каркас вашого скрипту
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-comment">-- Практична робота №1</span>
+<span class="sql-comment">-- Виконав(ла): Шевченко Іван, група М-21</span>
+
+<span class="sql-kw">DROP TABLE IF EXISTS</span> students;
+
+<span class="sql-kw">CREATE TABLE</span> students (
+    <span class="sql-comment">-- тут ваші 8 колонок</span>
+);</code></pre>
+              </div>
+
+              <div class="m3-callout">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div>
+                  Структура таблиці: вкладка <strong>Database</strong> → <code>students</code> у списку TABLES → блок <strong>STRUCTURE</strong>. Якщо таблиці не видно, натисніть кнопку оновлення ↻.
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Submission Checklist -->
+            <div class="report-guide-card m-0">
+              <div class="report-header">
+                <div class="report-header-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <div>
+                  <h3 class="card-heading m-0">Що прикріпити до завдання</h3>
+                  <p class="card-note">3 частини звіту</p>
+                </div>
+              </div>
+
+              <ul class="report-checklist">
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Скріншот 1 — запит:</strong> видно весь код у редакторі: угорі коментар <code>-- Виконав(ла): Прізвище Ім'я, група</code>, далі <code>DROP TABLE IF EXISTS</code> і <code>CREATE TABLE students</code>. У Console немає помилок.</span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Скріншот 2 — структура:</strong> вкладка Database з таблицею <code>students</code>: видно всі 8 колонок, їхні типи та позначку <code>PK</code> біля <code>id</code>.</span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Відповіді та висновок:</strong> фото рукопису або файл .docx (слайд 9).</span>
+                </li>
+              </ul>
+
+              <div class="action-row mt-5">
+                <a href="../../index.html" class="m3-btn m3-btn-primary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                  <span>Завершити та повернутися на головну</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===================================================================
+         Floating Material Navigation Bar (Bottom)
+         =================================================================== -->
+    <nav class="presentation-bar" aria-label="Slide Navigation">
+      <button class="bar-btn" id="btn-prev" title="Попередній слайд (←)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="slide-counter" id="slide-counter">01 / 10</div>
+
+      <button class="bar-btn" id="btn-next" title="Наступний слайд (→ / Space)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Presentation engine: navigation + code copy buttons -->
+  <script src="../../js/app.js"></script>
+</body>
+</html>

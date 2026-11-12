@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark" data-course-item="lab-05" class="presentation-page">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Практична 05: COUNT, SUM, AVG, GROUP BY | SQL Курс</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Material Design 3 Stylesheet -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <!-- Доступ до матеріалів: 1/0 у js/course-config.js -->
+  <script src="../../js/course-config.js"></script>
+  <script src="../../js/access.js"></script>
+</head>
+<body class="presentation-page">
+
+  <div class="presentation-viewport">
+    <!-- Hub Back Link -->
+    <a href="../../index.html" class="hub-back-btn" title="Повернутися на головну курсу">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      <span>Головна курсу</span>
+    </a>
+
+    <!-- Top Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Slides Wrapper -->
+    <main class="slides-wrapper" id="slides-wrapper">
+
+      <!-- ===================================================================
+           SLIDE 1: Hero
+           =================================================================== -->
+      <section class="slide active" id="slide-1">
+        <div class="slide-hero">
+          <div class="hero-pill success">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Практична робота №05
+          </div>
+          <h1 class="hero-title">Агрегація даних та аналітика</h1>
+          <p class="hero-description">
+            Рахуємо статистику конкурсу: кількість учасників, суми та середні значення, результати по групах — і визначаємо, хто ж став «Студентом тижня».
+          </p>
+
+          <div class="hero-chips">
+            <span class="audience-chip">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              Проєкт «Студент тижня»
+            </span>
+            <span class="audience-chip">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              PlayCode SQL Editor
+            </span>
+          </div>
+
+          <div class="action-row">
+            <button class="m3-btn m3-btn-primary" onclick="presentation.next()">
+              <span>Почати практичну</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+            <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-tonal">
+              <span>Відкрити PlayCode ↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 2: Starter script (students + student_votes)
+           =================================================================== -->
+      <section class="slide" id="slide-2">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Підготовка</span>
+          </div>
+          <h2 class="slide-title">Стартовий скрипт: студенти та журнал голосів</h2>
+          <p class="slide-subtitle">
+            8 студентів і 16 голосів. Скрипт довгий — копіюйте кнопкою «Копіювати», а не виділенням. Свій код пишіть нижче.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="code-box compact mt-0">
+            <div class="code-box-header">
+              <span class="code-box-lang">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                стартовий скрипт (прокручується)
+              </span>
+              <button class="code-copy-btn" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Копіювати</span>
+              </button>
+            </div>
+            <pre><code><span class="sql-kw">DROP TABLE IF EXISTS</span> student_votes, nominations, students;
+
+<span class="sql-kw">CREATE TABLE</span> students (
+    id <span class="sql-type">SERIAL</span> <span class="sql-kw">PRIMARY KEY</span>,
+    full_name <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,
+    group_name <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,
+    email <span class="sql-type">TEXT</span> <span class="sql-kw">UNIQUE</span>,
+    achievements <span class="sql-type">TEXT</span>,
+    votes <span class="sql-type">INTEGER</span> <span class="sql-kw">DEFAULT</span> <span class="sql-num">0</span>,
+    is_active <span class="sql-type">BOOLEAN</span> <span class="sql-kw">DEFAULT</span> <span class="sql-kw">TRUE</span>,
+    registered_at <span class="sql-type">DATE</span> <span class="sql-kw">NOT NULL</span>
+);
+
+<span class="sql-kw">INSERT INTO</span> students (full_name, group_name, email, achievements, votes, is_active, registered_at) <span class="sql-kw">VALUES</span>
+    (<span class="sql-str">'Олександр Коваленко'</span>, <span class="sql-str">'М-21'</span>, <span class="sql-str">'kovalenko@college.ua'</span>, <span class="sql-str">'Переможець олімпіади з фізики'</span>, <span class="sql-num">12</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-01'</span>),
+    (<span class="sql-str">'Анастасія Мельник'</span>, <span class="sql-str">'Б-11'</span>, <span class="sql-str">'melnyk@college.ua'</span>, <span class="sql-str">'Організувала волонтерську толоку'</span>, <span class="sql-num">9</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-01'</span>),
+    (<span class="sql-str">'Дмитро Бондаренко'</span>, <span class="sql-str">'М-32'</span>, <span class="sql-str">'bondarenko@college.ua'</span>, <span class="sql-kw">NULL</span>, <span class="sql-num">5</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-02'</span>),
+    (<span class="sql-str">'Софія Ткаченко'</span>, <span class="sql-str">'Б-21'</span>, <span class="sql-str">'tkachenko@college.ua'</span>, <span class="sql-str">'Капітанка команди з волейболу'</span>, <span class="sql-num">15</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-03'</span>),
+    (<span class="sql-str">'Максим Шевчук'</span>, <span class="sql-str">'М-21'</span>, <span class="sql-str">'shevchuk@college.ua'</span>, <span class="sql-str">'Допомагає одногрупникам з математики'</span>, <span class="sql-num">7</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-03'</span>),
+    (<span class="sql-str">'Вікторія Лисенко'</span>, <span class="sql-str">'Б-11'</span>, <span class="sql-str">'lysenko@college.ua'</span>, <span class="sql-kw">NULL</span>, <span class="sql-num">0</span>, <span class="sql-kw">FALSE</span>, <span class="sql-str">'2026-09-05'</span>),
+    (<span class="sql-str">'Андрій Кравченко'</span>, <span class="sql-str">'М-32'</span>, <span class="sql-str">'kravchenko@college.ua'</span>, <span class="sql-str">'Кращий проєкт на виставці техтворчості'</span>, <span class="sql-num">11</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-08'</span>),
+    (<span class="sql-str">'Юлія Олійник'</span>, <span class="sql-str">'Б-21'</span>, <span class="sql-str">'oliinyk@college.ua'</span>, <span class="sql-str">'Староста групи'</span>, <span class="sql-num">3</span>, <span class="sql-kw">TRUE</span>, <span class="sql-str">'2026-09-10'</span>);
+
+<span class="sql-kw">CREATE TABLE</span> student_votes (
+    id <span class="sql-type">SERIAL</span> <span class="sql-kw">PRIMARY KEY</span>,
+    student_id <span class="sql-type">INTEGER</span> <span class="sql-kw">NOT NULL</span> <span class="sql-kw">REFERENCES</span> students(id),
+    voter_name <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,
+    voted_at <span class="sql-type">DATE</span> <span class="sql-kw">NOT NULL</span>
+);
+
+<span class="sql-kw">INSERT INTO</span> student_votes (student_id, voter_name, voted_at) <span class="sql-kw">VALUES</span>
+    (<span class="sql-num">4</span>, <span class="sql-str">'Ірина Савченко'</span>, <span class="sql-str">'2026-09-08'</span>), (<span class="sql-num">1</span>, <span class="sql-str">'Петро Гончар'</span>, <span class="sql-str">'2026-09-08'</span>), (<span class="sql-num">4</span>, <span class="sql-str">'Олег Мороз'</span>, <span class="sql-str">'2026-09-08'</span>),
+    (<span class="sql-num">7</span>, <span class="sql-str">'Ірина Савченко'</span>, <span class="sql-str">'2026-09-09'</span>), (<span class="sql-num">2</span>, <span class="sql-str">'Тарас Бойко'</span>, <span class="sql-str">'2026-09-09'</span>), (<span class="sql-num">4</span>, <span class="sql-str">'Марія Руденко'</span>, <span class="sql-str">'2026-09-09'</span>),
+    (<span class="sql-num">1</span>, <span class="sql-str">'Олена Павленко'</span>, <span class="sql-str">'2026-09-09'</span>), (<span class="sql-num">7</span>, <span class="sql-str">'Петро Гончар'</span>, <span class="sql-str">'2026-09-10'</span>), (<span class="sql-num">5</span>, <span class="sql-str">'Олег Мороз'</span>, <span class="sql-str">'2026-09-10'</span>),
+    (<span class="sql-num">4</span>, <span class="sql-str">'Тарас Бойко'</span>, <span class="sql-str">'2026-09-10'</span>), (<span class="sql-num">1</span>, <span class="sql-str">'Марія Руденко'</span>, <span class="sql-str">'2026-09-10'</span>), (<span class="sql-num">2</span>, <span class="sql-str">'Олена Павленко'</span>, <span class="sql-str">'2026-09-11'</span>),
+    (<span class="sql-num">7</span>, <span class="sql-str">'Тарас Бойко'</span>, <span class="sql-str">'2026-09-11'</span>), (<span class="sql-num">4</span>, <span class="sql-str">'Петро Гончар'</span>, <span class="sql-str">'2026-09-11'</span>), (<span class="sql-num">1</span>, <span class="sql-str">'Ірина Савченко'</span>, <span class="sql-str">'2026-09-12'</span>),
+    (<span class="sql-num">8</span>, <span class="sql-str">'Олег Мороз'</span>, <span class="sql-str">'2026-09-12'</span>);</code></pre>
+          </div>
+
+          <div class="m3-callout mt-4">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div>
+              Це ті самі таблиці, що й у практичній 04: <code>students</code> з лічильником <code>votes</code> і журнал <code>student_votes</code>, де кожен голос — окремий рядок.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 3: Aggregate functions
+           =================================================================== -->
+      <section class="slide" id="slide-3">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Агрегатні функції</span>
+          </div>
+          <h2 class="slide-title">COUNT, SUM, AVG, MIN, MAX</h2>
+          <p class="slide-subtitle">
+            Агрегатна функція «згортає» багато рядків в одне число — як підсумковий рядок у кошторисі.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div class="m3-table-wrapper m-0">
+              <table class="m3-table compact">
+                <thead>
+                  <tr>
+                    <th style="width: 40%;">Функція</th>
+                    <th style="width: 40%;">Що рахує</th>
+                    <th style="width: 20%;">Результат*</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>COUNT(*)</code></td><td>кількість рядків</td><td>8</td></tr>
+                  <tr><td><code>COUNT(achievements)</code></td><td>лише заповнені значення (без <code>NULL</code>)</td><td>6</td></tr>
+                  <tr><td><code>SUM(votes)</code></td><td>суму</td><td>62</td></tr>
+                  <tr><td><code>AVG(votes)</code></td><td>середнє значення</td><td>7.7500000000000000</td></tr>
+                  <tr><td><code>ROUND(AVG(votes), 1)</code></td><td>середнє, округлене до 1 знака</td><td>7.8</td></tr>
+                  <tr><td><code>MIN(votes)</code> / <code>MAX(votes)</code></td><td>найменше / найбільше</td><td>0 / 15</td></tr>
+                </tbody>
+              </table>
+              <p class="card-note mt-2">* на даних стартового скрипту, таблиця <code>students</code></p>
+            </div>
+
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Приклад
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> total_students,
+       <span class="sql-fn">SUM</span>(votes) <span class="sql-kw">AS</span> total_votes
+<span class="sql-kw">FROM</span> students;</code></pre>
+              </div>
+
+              <div class="m3-callout">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <div>
+                  <strong>AS</strong> дає колонці результату зрозумілу назву. Без нього колонки називались би просто <code>count</code> і <code>sum</code>. Результат цього запиту — один рядок: <code>8 | 62</code>.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 4: GROUP BY
+           =================================================================== -->
+      <section class="slide" id="slide-4">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Групування</span>
+          </div>
+          <h2 class="slide-title">GROUP BY: підсумки по групах</h2>
+          <p class="slide-subtitle">
+            Уявіть, що ви розклали картки студентів у купки за групою, а потім порахували кожну купку окремо.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Найкращий результат у кожній групі
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-kw">SELECT</span> group_name, <span class="sql-fn">MAX</span>(votes) <span class="sql-kw">AS</span> best
+<span class="sql-kw">FROM</span> students
+<span class="sql-kw">GROUP BY</span> group_name
+<span class="sql-kw">ORDER BY</span> group_name;</code></pre>
+              </div>
+
+              <div class="m3-table-wrapper m-0">
+                <table class="m3-table compact">
+                  <thead><tr><th>group_name</th><th>best</th></tr></thead>
+                  <tbody>
+                    <tr><td>Б-11</td><td>9</td></tr>
+                    <tr><td>Б-21</td><td>15</td></tr>
+                    <tr><td>М-21</td><td>12</td></tr>
+                    <tr><td>М-32</td><td>11</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">Як це працює</h3>
+              <ul class="feature-list relaxed">
+                <li>
+                  <span class="feature-icon label accent-blue">1</span>
+                  <span>СУБД ділить рядки на групи з однаковим значенням <code>group_name</code>.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-green">2</span>
+                  <span>Агрегатна функція рахується <strong>окремо для кожної групи</strong>.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-amber">3</span>
+                  <span>У результаті — <strong>один рядок на групу</strong>: 8 студентів → 4 рядки.</span>
+                </li>
+              </ul>
+              <div class="m3-callout warning">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div>
+                  <strong>Правило:</strong> кожна колонка в <code>SELECT</code> має бути або в <code>GROUP BY</code>, або всередині агрегатної функції.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 5: HAVING & clause order
+           =================================================================== -->
+      <section class="slide" id="slide-5">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Фільтрація груп</span>
+          </div>
+          <h2 class="slide-title">HAVING і порядок частин запиту</h2>
+          <p class="slide-subtitle">
+            <code>WHERE</code> відсіює рядки <strong>до</strong> групування, <code>HAVING</code> — цілі групи <strong>після</strong> підрахунку.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Групи, де щонайменше 2 активні учасники
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-kw">SELECT</span> group_name, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> students_count
+<span class="sql-kw">FROM</span> students
+<span class="sql-kw">WHERE</span> is_active = <span class="sql-kw">TRUE</span>        <span class="sql-comment">-- фільтр рядків</span>
+<span class="sql-kw">GROUP BY</span> group_name
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">2</span>;      <span class="sql-comment">-- фільтр груп</span></code></pre>
+              </div>
+
+              <p class="card-text">
+                Результат: Б-21, М-21 і М-32 — по 2 активні учасники. Групи Б-11 немає: Вікторія Лисенко неактивна, тож там лишився один учасник.
+              </p>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">Порядок частин запиту</h3>
+              <ol class="bullet-list relaxed">
+                <li><code>SELECT</code> — що показати</li>
+                <li><code>FROM</code> / <code>JOIN</code> — звідки</li>
+                <li><code>WHERE</code> — які рядки взяти</li>
+                <li><code>GROUP BY</code> — як згрупувати</li>
+                <li><code>HAVING</code> — які групи залишити</li>
+                <li><code>ORDER BY</code> — як відсортувати</li>
+                <li><code>LIMIT</code> — скільки показати</li>
+              </ol>
+              <p class="card-note">💡 Будь-яку частину, крім <code>SELECT</code> і <code>FROM</code>, можна пропустити, але порядок змінювати не можна.</p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 6: Aggregation + JOIN
+           =================================================================== -->
+      <section class="slide" id="slide-6">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Агрегація + JOIN</span>
+          </div>
+          <h2 class="slide-title">Рахуємо голоси з журналу</h2>
+          <p class="slide-subtitle">
+            Найчесніший підрахунок — не лічильник <code>votes</code>, а кількість рядків у журналі <code>student_votes</code>.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Голоси з журналу по групах
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-kw">SELECT</span> students.group_name,
+       <span class="sql-fn">COUNT</span>(student_votes.id) <span class="sql-kw">AS</span> real_votes
+<span class="sql-kw">FROM</span> students
+<span class="sql-kw">LEFT JOIN</span> student_votes
+    <span class="sql-kw">ON</span> students.id = student_votes.student_id
+<span class="sql-kw">GROUP BY</span> students.group_name
+<span class="sql-kw">ORDER BY</span> real_votes <span class="sql-kw">DESC</span>;</code></pre>
+              </div>
+
+              <div class="m3-table-wrapper m-0">
+                <table class="m3-table compact">
+                  <thead><tr><th>group_name</th><th>real_votes</th></tr></thead>
+                  <tbody>
+                    <tr><td>Б-21</td><td>6</td></tr>
+                    <tr><td>М-21</td><td>5</td></tr>
+                    <tr><td>М-32</td><td>3</td></tr>
+                    <tr><td>Б-11</td><td>2</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">На що звернути увагу</h3>
+              <ul class="feature-list relaxed">
+                <li>
+                  <span class="feature-icon label accent-blue">1</span>
+                  <span>Спершу <code>JOIN</code> «склеює» студентів з їхніми голосами, потім <code>GROUP BY</code> групує, а <code>COUNT</code> рахує.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-amber">2</span>
+                  <span><code>COUNT(student_votes.id)</code>, а не <code>COUNT(*)</code>: для студента без голосів <code>LEFT JOIN</code> дає рядок з <code>NULL</code>, і <code>COUNT(*)</code> порахував би його як 1 голос.</span>
+                </li>
+                <li>
+                  <span class="feature-icon label accent-green">3</span>
+                  <span>Колонки з назвами таблиць (<code>students.group_name</code>), бо запит працює з двома таблицями.</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 7: Demo
+           =================================================================== -->
+      <section class="slide" id="slide-7">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Живий зразок коду</span>
+          </div>
+          <h2 class="slide-title">Зразок: активність голосування по днях</h2>
+          <p class="slide-subtitle">
+            У які дні голосували найактивніше? Вставте під стартовим скриптом і запустіть.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="code-box mt-0">
+            <div class="code-box-header">
+              <span class="code-box-lang">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                демо-скрипт (після стартового)
+              </span>
+              <button class="code-copy-btn" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Копіювати код</span>
+              </button>
+            </div>
+            <pre><code><span class="sql-comment">-- Скільки голосів віддали кожного дня</span>
+<span class="sql-kw">SELECT</span> voted_at, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> votes_count
+<span class="sql-kw">FROM</span> student_votes
+<span class="sql-kw">GROUP BY</span> voted_at
+<span class="sql-kw">ORDER BY</span> voted_at;
+
+<span class="sql-comment">-- Лише «гарячі» дні: 4 голоси і більше</span>
+<span class="sql-kw">SELECT</span> voted_at, <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> votes_count
+<span class="sql-kw">FROM</span> student_votes
+<span class="sql-kw">GROUP BY</span> voted_at
+<span class="sql-kw">HAVING</span> <span class="sql-fn">COUNT</span>(*) &gt;= <span class="sql-num">4</span>;</code></pre>
+          </div>
+
+          <div class="code-footer">
+            <p class="card-text m-0">
+              🔍 Перший запит — 5 днів: 3, 4, 4, 3 і 2 голоси. Другий — лише 9 і 10 вересня (по 4 голоси).
+            </p>
+            <a href="https://playcode.io/sql-editor" target="_blank" rel="noopener noreferrer" class="m3-btn m3-btn-tonal">
+              <span>Спробувати в PlayCode ↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 8: Common Errors & Traps
+           =================================================================== -->
+      <section class="slide" id="slide-8">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip error">Типові помилки</span>
+          </div>
+          <h2 class="slide-title">Помилки та пастки</h2>
+          <p class="slide-subtitle">
+            Перша помилка в списку — найчастіша в усій темі агрегації.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="m3-table-wrapper m-0">
+            <table class="m3-table compact">
+              <thead>
+                <tr>
+                  <th style="width: 40%;">Повідомлення PostgreSQL</th>
+                  <th style="width: 30%;">Що сталося</th>
+                  <th style="width: 30%;">Як виправити</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>column "students.full_name" must appear in the GROUP BY clause or be used in an aggregate function</code></td>
+                  <td>Колонка в <code>SELECT</code> не згрупована</td>
+                  <td>Додайте її в <code>GROUP BY</code> або приберіть з <code>SELECT</code></td>
+                </tr>
+                <tr>
+                  <td><code>aggregate functions are not allowed in WHERE</code></td>
+                  <td><code>SUM</code> / <code>COUNT</code> у <code>WHERE</code></td>
+                  <td>Умову на підсумок пишіть у <code>HAVING</code></td>
+                </tr>
+                <tr>
+                  <td><code>column "total" does not exist</code></td>
+                  <td>Назву з <code>AS</code> використали в <code>HAVING</code></td>
+                  <td>Повторіть вираз: <code>HAVING SUM(votes) &gt; 15</code></td>
+                </tr>
+                <tr>
+                  <td><code>syntax error at or near "GROUP"</code></td>
+                  <td><code>HAVING</code> написано перед <code>GROUP BY</code></td>
+                  <td>Порядок: <code>GROUP BY … HAVING …</code></td>
+                </tr>
+                <tr>
+                  <td><code>function cont() does not exist</code></td>
+                  <td>Описка в назві функції</td>
+                  <td>Перевірте: <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="m3-callout warning mt-5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <strong>Тиха пастка:</strong> <code>SUM(votes) / COUNT(*)</code> дасть <strong>7</strong>, а не 7.75 — ділення цілих чисел відкидає дробову частину. Для середнього використовуйте <code>AVG</code>, а для гарного вигляду — <code>ROUND(AVG(votes), 1)</code>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 9: Practical Task
+           =================================================================== -->
+      <section class="slide" id="slide-9">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Практичне завдання</span>
+            <span class="m3-chip tertiary">Студент тижня</span>
+          </div>
+          <h2 class="slide-title">Аналітика конкурсу і переможець</h2>
+          <p class="slide-subtitle">
+            Пишіть запити під стартовим скриптом. Кожну колонку результату назвіть через <code>AS</code>.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div class="m3-card top-accent accent-blue">
+              <div class="card-toolbar">
+                <span class="variant-label">Завдання</span>
+                <span class="audience-chip compact">🏆 Студент тижня</span>
+              </div>
+              <ol class="bullet-list relaxed">
+                <li>Скільки <strong>активних</strong> учасників у конкурсі.</li>
+                <li>Одним запитом: загальна, середня (округлена до 1 знака) і максимальна кількість голосів з колонки <code>votes</code>.</li>
+                <li>Для кожної групи: кількість студентів і сума голосів. Група з найбільшою сумою — вгорі.</li>
+                <li>Лише групи, де сума голосів більша за 15 (<code>HAVING</code>).</li>
+                <li><strong>Студент тижня:</strong> порахуйте голоси кожного студента з журналу <code>student_votes</code> і виведіть переможця — один рядок: ПІБ, група, кількість голосів.</li>
+              </ol>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">Підказки</h3>
+              <ul class="bullet-list">
+                <li>Запит 1 — <code>COUNT</code> + <code>WHERE</code>.</li>
+                <li>Запит 3 — <code>GROUP BY</code> + <code>ORDER BY … DESC</code>.</li>
+                <li>Запит 5 — <code>JOIN</code> + <code>GROUP BY</code> за <code>id</code>, ПІБ і групою + <code>ORDER BY</code> + <code>LIMIT 1</code>.</li>
+              </ul>
+
+              <div class="m3-callout success mt-4">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <div>
+                  <strong>Перевірте себе:</strong> запит 1 → 7; запит 2 → 62, 7.8, 15; запит 3 → М-21 вгорі (19 голосів); запит 4 → 3 групи; запит 5 → Софія Ткаченко, Б-21, 5 голосів.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 10: Control Questions & Conclusion
+           =================================================================== -->
+      <section class="slide" id="slide-10">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip primary">Контрольні запитання</span>
+          </div>
+          <h2 class="slide-title">Контрольні запитання та висновок</h2>
+          <p class="slide-subtitle">
+            Дайте письмові відповіді на 5 запитань і зробіть короткий висновок. Можна від руки (фото) або у файлі .docx.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div class="m3-card top-accent accent-purple">
+              <div class="card-toolbar">
+                <span class="variant-label">5 запитань</span>
+              </div>
+              <ol class="bullet-list relaxed">
+                <li>Що повертають функції <code>COUNT(*)</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code> і <code>MAX</code>?</li>
+                <li>Чим відрізняються <code>COUNT(*)</code> і <code>COUNT(achievements)</code>?</li>
+                <li>Як працює <code>GROUP BY</code>? Яке правило діє для колонок у <code>SELECT</code>?</li>
+                <li>Чим відрізняються <code>WHERE</code> і <code>HAVING</code>?</li>
+                <li>Чому кількість голосів за журналом <code>student_votes</code> не збігається з колонкою <code>votes</code>? Якому джерелу ви довіряєте більше і чому?</li>
+              </ol>
+            </div>
+
+            <div class="m3-card">
+              <h3 class="card-heading text-primary">Висновок</h3>
+              <p class="card-text">
+                3–5 речень своїми словами: чого ви навчилися, що вдалося, з якими труднощами зіткнулися.
+              </p>
+              <div class="m3-callout compact mt-2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <div>
+                  <em>Наприклад:</em> «Під час практичної роботи я навчився(лася) рахувати статистику за допомогою GROUP BY… Найскладнішим було… Тепер я розумію, навіщо…»
+                </div>
+              </div>
+
+              <h3 class="card-heading text-primary mt-5">Як оформити</h3>
+              <ul class="bullet-list">
+                <li>Угорі — ПІБ, група і «Практична робота №5».</li>
+                <li><strong>Від руки:</strong> пишіть розбірливо, фото — рівне, світле, весь текст має читатися добре.</li>
+                <li><strong>Або файл .docx</strong> (Word чи Google Docs → «Завантажити як .docx»).</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 11: Classroom Submission
+           =================================================================== -->
+      <section class="slide" id="slide-11">
+        <header class="slide-header">
+          <div class="badge-row">
+            <span class="m3-chip success">Звітність</span>
+          </div>
+          <h2 class="slide-title">Що здати в Classroom</h2>
+          <p class="slide-subtitle">
+            5 скріншотів з PlayCode + відповіді на контрольні запитання з висновком. Усе прикріпіть до одного завдання в Google Classroom.
+          </p>
+        </header>
+
+        <div class="slide-content">
+          <div class="grid-2col">
+
+            <div>
+              <div class="code-box mt-0">
+                <div class="code-box-header">
+                  <span class="code-box-lang">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    каркас вашого скрипту
+                  </span>
+                  <button class="code-copy-btn" type="button">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>Копіювати</span>
+                  </button>
+                </div>
+                <pre><code><span class="sql-comment">-- Практична робота №5</span>
+<span class="sql-comment">-- Виконав(ла): Шевченко Іван, група М-21</span>
+
+<span class="sql-comment">-- тут стартовий скрипт (студенти + журнал голосів)</span>
+
+<span class="sql-comment">-- Запит 1: активні учасники</span>
+<span class="sql-kw">SELECT</span> <span class="sql-fn">COUNT</span>(*) <span class="sql-kw">AS</span> active_students
+<span class="sql-kw">FROM</span> students
+<span class="sql-kw">WHERE</span> ...;</code></pre>
+              </div>
+            </div>
+
+            <div class="report-guide-card m-0">
+              <div class="report-header">
+                <div class="report-header-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <div>
+                  <h3 class="card-heading m-0">Що прикріпити до завдання</h3>
+                  <p class="card-note">3 частини звіту</p>
+                </div>
+              </div>
+
+              <ul class="report-checklist">
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Скріншоти 1–5:</strong> по одному на кожен запит — видно код запиту і таблицю Results. На першому — також коментар з ПІБ угорі скрипту.</span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Без помилок:</strong> у Console немає червоних повідомлень, колонки результату названі через <code>AS</code>.</span>
+                </li>
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span><strong>Відповіді та висновок:</strong> фото рукопису або файл .docx (слайд 10).</span>
+                </li>
+              </ul>
+
+              <div class="action-row mt-5">
+                <a href="../../index.html" class="m3-btn m3-btn-primary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                  <span>Завершити та повернутися на головну</span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===================================================================
+         Floating Material Navigation Bar (Bottom)
+         =================================================================== -->
+    <nav class="presentation-bar" aria-label="Slide Navigation">
+      <button class="bar-btn" id="btn-prev" title="Попередній слайд (←)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="slide-counter" id="slide-counter">01 / 11</div>
+
+      <button class="bar-btn" id="btn-next" title="Наступний слайд (→ / Space)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Presentation engine: navigation + code copy buttons -->
+  <script src="../../js/app.js"></script>
+</body>
+</html>
